@@ -60,3 +60,11 @@ class BillingService:
             
         # Return the ID so the GUI can proceed to generate PDFs if needed.
         return invoice_id
+
+
+
+
+
+
+
+
