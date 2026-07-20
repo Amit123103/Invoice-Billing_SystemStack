@@ -117,3 +117,9 @@ class ReportsPage(ctk.CTkFrame):
                 amt_str, 
                 inv.get('status', 'N/A')
             ))
+
+
+
+
+
+
