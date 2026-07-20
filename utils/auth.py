@@ -63,3 +63,15 @@ def verify_password(password: str, hashed: str) -> bool:
     # If the resulting hash exactly matches the stored hash, the password is correct.
     # This proves the user knows the password without us ever knowing what it is.
     return hash_password(password) == hashed
+
+
+
+
+
+
+
+
+
+
+
+
