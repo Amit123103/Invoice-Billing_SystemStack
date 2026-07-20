@@ -142,7 +142,14 @@ class InvoicePage(ctk.CTkFrame):
         
         # Final Grand Total display
         self.lbl_total = ctk.CTkLabel(row3, text="Final Amount: ₹0.00", font=ctk.CTkFont(size=20, weight="bold"), text_color="#10b981")
-        self.lbl_total.pack(side="left", padx=40)
+        self.lbl_total.pack(side="left", padx=20)
+        
+        # Amount Paid Input
+        paid_frame = ctk.CTkFrame(row3, fg_color="transparent")
+        paid_frame.pack(side="left", padx=20)
+        ctk.CTkLabel(paid_frame, text="Amount Paid: ₹", font=ctk.CTkFont(size=14), text_color="#6b7280").pack(side="left")
+        self.amount_paid_var = ctk.StringVar(value="0")
+        ctk.CTkEntry(paid_frame, textvariable=self.amount_paid_var, width=80).pack(side="left", padx=5)
         
         # Button to finalize the transaction
         ctk.CTkButton(row3, text="Generate Invoice", command=self.generate_invoice, fg_color="#10b981", hover_color="#059669", font=ctk.CTkFont(weight="bold")).pack(side="right", padx=10)
@@ -265,6 +272,7 @@ class InvoicePage(ctk.CTkFrame):
         self.lbl_subtotal.configure(text=f"Subtotal: ₹{self.total_subtotal:.2f}")
         self.lbl_tax.configure(text=f"Total Tax: ₹{self.total_tax:.2f}")
         self.lbl_total.configure(text=f"Final Amount: ₹{self.final_amount:.2f}")
+        self.amount_paid_var.set(f"{self.final_amount:.2f}")
 
     # Purpose:
     # Empties the shopping basket and resets all totals to zero.
@@ -302,6 +310,15 @@ class InvoicePage(ctk.CTkFrame):
         # First, generate the cryptographic QR code image
         qr_path, qr_hash = self.qr_service.generate_qr(inv_number, cust_name, self.final_amount)
         
+        try:
+            amount_paid = float(self.amount_paid_var.get())
+        except ValueError:
+            amount_paid = self.final_amount
+
+        status = "Paid"
+        if amount_paid < self.final_amount:
+            status = "Partial"
+            
         # Package the master invoice header details into a dictionary expected by BillingService
         invoice_data = {
             "invoice_number": inv_number, 
@@ -315,8 +332,8 @@ class InvoicePage(ctk.CTkFrame):
             "total_tax": self.total_tax, 
             "total_amount": self.final_amount,
             "payment_method": self.payment_var.get(), 
-            "status": "Paid",
-            "amount_paid": self.final_amount, 
+            "status": status,
+            "amount_paid": amount_paid, 
             "notes": "",
             # Check who is logged in via the master controller. Fallback to ID 1 if None.
             "created_by": self.controller.current_user['id'] if self.controller.current_user else 1,
