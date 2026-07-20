@@ -10,8 +10,6 @@ Dependencies:
 - customtkinter (Theming and Window creation)
 - tkinter (Underlying GUI engine)
 - All the page classes from the gui/ folder.
-
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
