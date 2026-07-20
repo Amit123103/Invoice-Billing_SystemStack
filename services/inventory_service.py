@@ -57,3 +57,13 @@ class InventoryService:
         
         # Use a list comprehension to filter only those products whose stock is dangerously low
         return [p for p in products if p['stock_quantity'] <= threshold]
+
+
+
+
+
+
+
+
+
+
