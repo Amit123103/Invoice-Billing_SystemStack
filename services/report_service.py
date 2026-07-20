@@ -113,7 +113,7 @@ class ReportService:
         c.setFont("Helvetica", 10)
         y = 590
         for inv in invoices[:25]: # limit to 25 items for one page roughly
-            if y < 50:
+            if y < 150:
                 c.showPage()
                 y = 800
                 c.setFont("Helvetica", 10)
@@ -124,6 +124,28 @@ class ReportService:
             c.drawString(400, y, str(inv['amount']))
             c.drawString(480, y, str(inv['status']))
             y -= 20
+            
+        # Add Verified Stamp and QR Code at the end of the report
+        if y < 150:
+            c.showPage()
+            y = 800
+            
+        # Draw Verified Stamp
+        c.setFont("Helvetica-Bold", 16)
+        c.setFillColorRGB(0.06, 0.6, 0.2) # Professional Green
+        c.drawString(50, y - 50, "*** VERIFIED BUSINESS REPORT ***")
+        c.setFillColorRGB(0, 0, 0) # Reset to black
+        
+        # Generate and draw QR Code
+        import qrcode
+        import hashlib
+        report_data = f"Smart ERP | Rev: {metrics['revenue']} | Inv: {metrics['invoices']}"
+        report_hash = hashlib.sha256(report_data.encode()).hexdigest()
+        img = qrcode.make(f"{report_data} | HASH: {report_hash}")
+        qr_img_path = os.path.join(self.reports_dir, "temp_report_qr.png")
+        img.save(qr_img_path)
+        
+        c.drawImage(qr_img_path, 400, y - 100, width=80, height=80)
             
         c.showPage()
         c.save()
