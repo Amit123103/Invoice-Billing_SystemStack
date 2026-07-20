@@ -8,8 +8,6 @@ the overall Invoice itself and the individual line items contained within it.
 Dependencies:
 - dataclasses
 - typing
-
-Project: Smart ERP Billing System
 """
 
 from dataclasses import dataclass, field
