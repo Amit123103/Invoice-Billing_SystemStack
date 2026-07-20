@@ -8,7 +8,6 @@ Dependencies:
 - customtkinter
 - random (Used temporarily for mock chart generation)
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
@@ -184,3 +183,8 @@ class Dashboard(ctk.CTkFrame):
         
         # Navigate back to the login screen
         self.controller.show_frame("LoginPage")
+
+
+
+
+
