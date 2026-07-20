@@ -2,9 +2,4 @@ reportlab
 qrcode
 Pillow
 customtkinter
-
-
-
-
-
-
+matplotlib
