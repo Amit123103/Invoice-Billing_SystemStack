@@ -8,7 +8,6 @@ It ensures that plain text passwords are never stored in the database.
 Dependencies:
 - hashlib (For SHA-256 secure hashing)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

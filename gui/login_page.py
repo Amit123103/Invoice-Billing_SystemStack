@@ -10,7 +10,6 @@ Dependencies:
 - database.queries (To verify the user against the database)
 - utils.auth (For hashing and verifying the password)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

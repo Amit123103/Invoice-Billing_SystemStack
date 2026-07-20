@@ -7,7 +7,6 @@ Defines the core Product data model which represents items that can be sold or t
 Dependencies:
 - dataclasses
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

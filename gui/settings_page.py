@@ -7,7 +7,6 @@ A placeholder UI screen for future Application Configuration features (like Comp
 Dependencies:
 - customtkinter
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

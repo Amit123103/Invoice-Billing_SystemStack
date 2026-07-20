@@ -7,7 +7,6 @@ Defines the Supplier data model representing vendors who provide products.
 Dependencies:
 - dataclasses
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

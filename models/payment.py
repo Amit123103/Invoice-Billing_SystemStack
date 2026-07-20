@@ -7,7 +7,6 @@ Defines the Payment model for tracking individual transactions made against invo
 Dependencies:
 - dataclasses
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

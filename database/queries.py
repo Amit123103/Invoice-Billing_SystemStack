@@ -8,7 +8,6 @@ Acts as a Data Access Object (DAO) for the application. It centralizes all SQL q
 Dependencies:
 - database.connection (For executing the SQL queries)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

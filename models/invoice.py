@@ -9,7 +9,6 @@ Dependencies:
 - dataclasses
 - typing
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

@@ -7,7 +7,6 @@ Centralizes all Goods and Services Tax (GST) mathematical calculations.
 Dependencies:
 - None
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

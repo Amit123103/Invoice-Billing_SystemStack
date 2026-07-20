@@ -10,7 +10,6 @@ Dependencies:
 - hashlib (For generating the tamper-proof hash)
 - os (For saving image files to disk)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

@@ -16,7 +16,6 @@ Dependencies:
 - services.report_service (To print the PDF)
 - datetime (For generating unique invoice numbers based on timestamps)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

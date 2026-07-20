@@ -7,7 +7,6 @@ Handles the logging of user actions across the system for security and auditing 
 Dependencies:
 - database.queries (To execute the log insert)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

@@ -11,7 +11,6 @@ Dependencies:
 - tkinter (Underlying GUI engine)
 - All the page classes from the gui/ folder.
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

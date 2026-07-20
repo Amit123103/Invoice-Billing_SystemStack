@@ -8,7 +8,6 @@ Dependencies:
 - customtkinter
 - random (Used temporarily for mock chart generation)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

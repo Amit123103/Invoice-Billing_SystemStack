@@ -7,7 +7,6 @@ A placeholder UI screen for future Analytical Reporting features.
 Dependencies:
 - customtkinter
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

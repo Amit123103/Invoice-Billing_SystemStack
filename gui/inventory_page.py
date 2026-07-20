@@ -10,7 +10,6 @@ Dependencies:
 - tkinter.messagebox
 - database.queries
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

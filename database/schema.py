@@ -8,7 +8,6 @@ It ensures that the database structure exists before the app attempts to read or
 Dependencies:
 - database.connection (For connecting to the DB and executing the CREATE TABLE scripts)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

@@ -9,7 +9,6 @@ Dependencies:
 - os (For file paths)
 - datetime (To timestamp backup files)
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 

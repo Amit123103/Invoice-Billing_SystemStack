@@ -8,7 +8,6 @@ It acts as a data transfer object between the database layer and the GUI/service
 Dependencies:
 - dataclasses
 
-Author: Amit Kumar
 Project: Smart ERP Billing System
 """
 
