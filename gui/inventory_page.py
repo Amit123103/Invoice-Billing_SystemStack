@@ -81,6 +81,14 @@ class InventoryPage(ctk.CTkFrame):
         table_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
         table_card.pack(fill="both", expand=True, padx=30, pady=10)
         
+        search_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        search_frame.pack(fill="x", padx=20, pady=(20, 0))
+        
+        self.search_var = ctk.StringVar()
+        self.search_var.trace_add("write", lambda *args: self.load_products(self.search_var.get()))
+        
+        ctk.CTkEntry(search_frame, textvariable=self.search_var, placeholder_text="Search by Name, Category, HSN...", width=300).pack(side="left")
+        
         columns = ("ID", "Name", "Category", "HSN", "Cost", "Selling", "GST", "Stock")
         
         # Apply modern CSS-like styling to the standard Tkinter Treeview
@@ -89,6 +97,7 @@ class InventoryPage(ctk.CTkFrame):
         style.configure("Treeview.Heading", background="#f9fafb", foreground="#6b7280", font=('Helvetica', 10, 'bold'), borderwidth=0)
         
         self.tree = ttk.Treeview(table_card, columns=columns, show="headings", style="Treeview")
+        self.tree.tag_configure('low_stock', foreground='#dc2626') # Red text for low stock
         for col in columns:
             self.tree.heading(col, text=col)
             self.tree.column(col, width=100, anchor="w")
@@ -150,7 +159,7 @@ class InventoryPage(ctk.CTkFrame):
 
     # Purpose:
     # Fetches all products and updates the Treeview.
-    def load_products(self):
+    def load_products(self, search_query=""):
         """
         Refreshes the product data grid.
         """
@@ -158,9 +167,16 @@ class InventoryPage(ctk.CTkFrame):
         for row in self.tree.get_children():
             self.tree.delete(row)
             
+        if search_query:
+            products = self.db.search_products(search_query)
+        else:
+            products = self.db.get_all("products")
+            
         # Fetch new data and insert rows
-        for p in self.db.get_all("products"):
-            self.tree.insert("", "end", values=(p['id'], p['name'], p['category'], p['hsn_code'], p['cost_price'], p['selling_price'], p['gst_percentage'], p['stock_quantity']))
+        for p in products:
+            item_id = self.tree.insert("", "end", values=(p['id'], p['name'], p['category'], p['hsn_code'], p['cost_price'], p['selling_price'], p['gst_percentage'], p['stock_quantity']))
+            if p['stock_quantity'] < 10:
+                self.tree.item(item_id, tags=('low_stock',))
 
 
 

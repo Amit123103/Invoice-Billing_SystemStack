@@ -78,6 +78,14 @@ class CustomerPage(ctk.CTkFrame):
         table_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
         table_card.pack(fill="both", expand=True, padx=30, pady=10)
         
+        search_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        search_frame.pack(fill="x", padx=20, pady=(20, 0))
+        
+        self.search_var = ctk.StringVar()
+        self.search_var.trace_add("write", lambda *args: self.load_customers(self.search_var.get()))
+        
+        ctk.CTkEntry(search_frame, textvariable=self.search_var, placeholder_text="Search by Name, Phone, Email...", width=300).pack(side="left")
+        
         # Define the columns that will appear in the table
         columns = ("ID", "Name", "Phone", "Email", "GST Number", "Address")
         
@@ -135,7 +143,7 @@ class CustomerPage(ctk.CTkFrame):
         
     # Purpose:
     # Pulls all customer records from the database and populates the Treeview table.
-    def load_customers(self):
+    def load_customers(self, search_query=""):
         """
         Refreshes the customer data grid.
         """
@@ -144,7 +152,10 @@ class CustomerPage(ctk.CTkFrame):
             self.tree.delete(row)
             
         # Step 2: Fetch fresh data from DB
-        customers = self.db.get_all("customers")
+        if search_query:
+            customers = self.db.search_customers(search_query)
+        else:
+            customers = self.db.get_all("customers")
         
         # Step 3: Insert each record as a new row in the Treeview
         for c in customers:

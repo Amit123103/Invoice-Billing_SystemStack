@@ -152,6 +152,16 @@ class DatabaseQueries:
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (name, category, hsn, cost, selling, gst, stock, supplier_id)).lastrowid
 
+    def search_products(self, search_term):
+        """
+        Searches the product table.
+        """
+        term = f"%{search_term}%"
+        return self.db.fetchall('''
+            SELECT * FROM products 
+            WHERE name LIKE ? OR category LIKE ? OR hsn_code LIKE ?
+        ''', (term, term, term))
+
     # -------------------------------------------------------------------------
     # INVENTORY & BILLING QUERIES
     # -------------------------------------------------------------------------
