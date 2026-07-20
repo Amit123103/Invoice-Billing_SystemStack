@@ -102,7 +102,17 @@ class DatabaseConnection:
             conn.commit()
             
             # Return the cursor so the caller can check things like cursor.lastrowid
-            return cursor
+            # However, we must close the connection. Since closing invalidates the cursor,
+            # we should return lastrowid instead of the cursor if that's what's needed.
+            # But the existing code returns the cursor. A workaround in SQLite is to fetch the result.
+            # But since execute might return a cursor for .lastrowid, we can grab it before closing.
+            last_id = cursor.lastrowid
+        conn.close()
+        # Return a dummy cursor-like object just with lastrowid to preserve compatibility
+        class DummyCursor:
+            def __init__(self, last_id):
+                self.lastrowid = last_id
+        return DummyCursor(last_id)
 
     # Purpose:
     # Executes a SELECT SQL statement and retrieves all matching rows.
@@ -126,7 +136,9 @@ class DatabaseConnection:
             cursor.execute(query, params)
             
             # fetchall() retrieves all rows returned by the database query and returns them as a list
-            return cursor.fetchall()
+            result = cursor.fetchall()
+        conn.close()
+        return result
 
     # Purpose:
     # Executes a SELECT SQL statement and retrieves only the very first matching row.
@@ -150,4 +162,6 @@ class DatabaseConnection:
             cursor.execute(query, params)
             
             # fetchone() retrieves just the first row. It is faster than fetchall() when we only need one record (like finding a user by ID)
-            return cursor.fetchone()
+            result = cursor.fetchone()
+        conn.close()
+        return result
