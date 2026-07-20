@@ -8,7 +8,6 @@ Dependencies:
 - customtkinter
 - tkinter.ttk
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
