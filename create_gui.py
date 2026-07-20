@@ -57,6 +57,9 @@ class Dashboard(tk.Frame):
         # Sidebar
         sidebar = tk.Frame(self, bg="#2c3e50", width=200)
         sidebar.pack(side="left", fill="y")
+
+
+       
         
         # Main content
         self.content = tk.Frame(self, bg="#ecf0f1")
