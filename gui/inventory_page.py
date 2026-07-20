@@ -102,20 +102,31 @@ class InventoryPage(ctk.CTkFrame):
         """
         Event handler for adding a new product.
         """
-        try:
-            name = self.name_var.get()
-            if not name: return
+        name = self.name_var.get()
+        if not name:
+            messagebox.showwarning("Validation Error", "Product Name is required.")
+            return
             
+        try:
             # We must wrap numerical inputs in float() or int() because UI fields return raw strings.
             # We use 'or 0' to prevent crashes if the user leaves the field totally blank.
+            cost = float(self.cost_var.get() or 0)
+            selling = float(self.selling_var.get() or 0)
+            gst = float(self.gst_var.get() or 0)
+            stock = int(self.stock_var.get() or 0)
+        except ValueError:
+            messagebox.showerror("Validation Error", "Cost Price, Selling Price, GST %, and Stock Qty must be numeric values.")
+            return
+
+        try:
             self.db.add_product(
                 name, 
                 self.category_var.get(), 
                 self.hsn_var.get(), 
-                float(self.cost_var.get() or 0), 
-                float(self.selling_var.get() or 0), 
-                float(self.gst_var.get() or 0), 
-                int(self.stock_var.get() or 0), 
+                cost, 
+                selling, 
+                gst, 
+                stock, 
                 None # Supplier ID is omitted for now in this simple version
             )
             
@@ -130,10 +141,10 @@ class InventoryPage(ctk.CTkFrame):
             
             # Refresh UI grid
             self.load_products()
-        except ValueError:
-            # If the user types "abc" into the Price field, float() will throw a ValueError.
-            # In a production app, we would show a messagebox error here.
-            pass
+            messagebox.showinfo("Success", "Product added successfully!")
+            
+        except Exception as e:
+            messagebox.showerror("Database Error", f"An error occurred: {str(e)}")
 
     # Purpose:
     # Fetches all products and updates the Treeview.
