@@ -99,3 +99,16 @@ class Invoice:
     # A list containing all the individual InvoiceItem rows.
     # We use a default_factory so new invoices start with an empty list instead of sharing the same list reference in memory.
     items: List[InvoiceItem] = field(default_factory=list)
+
+
+
+
+
+
+
+
+
+
+
+
+
