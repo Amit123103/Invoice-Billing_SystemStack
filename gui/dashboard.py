@@ -122,7 +122,7 @@ class Dashboard(ctk.CTkFrame):
             h = random.randint(50, 200)
             bar = ctk.CTkFrame(bars_frame, fg_color="#bfdbfe", width=40, height=h, corner_radius=6)
             # pack(side="bottom") ensures the bars grow upwards like a real chart
-            bar.pack(side="left", padx=10, side="bottom")
+            bar.pack(side="left", padx=10)
 
         # Set the home screen as the default view
         self.show_home()
