@@ -40,6 +40,7 @@ class ReportsPage(ctk.CTkFrame):
         btn_frame = ctk.CTkFrame(header, fg_color="transparent")
         btn_frame.pack(side="right")
         
+        ctk.CTkButton(btn_frame, text="Preview PDF", command=self.preview_pdf_report, fg_color="#8b5cf6", hover_color="#7c3aed").pack(side="left", padx=10)
         ctk.CTkButton(btn_frame, text="Download PDF Report", command=self.generate_pdf_report, fg_color="#10b981", hover_color="#059669").pack(side="left", padx=10)
         ctk.CTkButton(btn_frame, text="Refresh Data", command=self.load_data, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="left")
         
@@ -150,6 +151,28 @@ class ReportsPage(ctk.CTkFrame):
                 'amount': amt_str,
                 'status': inv.get('status', 'N/A')
             })
+
+    def preview_pdf_report(self):
+        """Generates a temporary PDF and opens it for previewing."""
+        if not self.last_invoices_data:
+            messagebox.showwarning("Warning", "No data available to preview report.")
+            return
+            
+        # Ensure reports directory exists
+        os.makedirs("reports", exist_ok=True)
+        temp_path = os.path.join(os.getcwd(), "reports", "preview_business_report.pdf")
+        
+        try:
+            pdf_path = self.report_service.generate_business_report_pdf(self.last_metrics, self.last_invoices_data, temp_path)
+            
+            # Open PDF automatically for preview
+            if os.name == 'nt':
+                os.startfile(pdf_path)
+            else:
+                import subprocess
+                subprocess.call(['open', pdf_path])
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to preview report: {str(e)}")
 
     def generate_pdf_report(self):
         """Generates and opens the business report PDF"""
