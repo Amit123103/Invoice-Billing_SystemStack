@@ -15,8 +15,6 @@ Dependencies:
 - services.qr_service (To generate the verification QR code)
 - services.report_service (To print the PDF)
 - datetime (For generating unique invoice numbers based on timestamps)
-
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
@@ -341,3 +339,8 @@ class InvoicePage(ctk.CTkFrame):
         except Exception as e:
             # If the database fails (e.g. locked file), show the error so the app doesn't crash silently
             messagebox.showerror("Error", str(e))
+
+
+
+
+
