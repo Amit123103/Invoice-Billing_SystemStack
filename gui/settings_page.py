@@ -9,7 +9,6 @@ Dependencies:
 - tkinter.messagebox
 - tkinter.filedialog
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
