@@ -50,24 +50,24 @@ class CustomerPage(ctk.CTkFrame):
         row1 = ctk.CTkFrame(form_card, fg_color="transparent")
         row1.pack(fill="x", padx=20, pady=(20, 10))
         
-        self.name_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.name_var, placeholder_text="Customer Name", width=200).pack(side="left", padx=10)
+        self.name_entry = ctk.CTkEntry(row1, placeholder_text="Customer Name", width=200)
+        self.name_entry.pack(side="left", padx=10)
         
-        self.phone_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.phone_var, placeholder_text="Phone Number", width=200).pack(side="left", padx=10)
+        self.phone_entry = ctk.CTkEntry(row1, placeholder_text="Phone Number", width=200)
+        self.phone_entry.pack(side="left", padx=10)
         
-        self.email_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.email_var, placeholder_text="Email Address", width=200).pack(side="left", padx=10)
+        self.email_entry = ctk.CTkEntry(row1, placeholder_text="Email Address", width=200)
+        self.email_entry.pack(side="left", padx=10)
         
-        self.gst_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.gst_var, placeholder_text="GST Number", width=200).pack(side="left", padx=10)
+        self.gst_entry = ctk.CTkEntry(row1, placeholder_text="GST Number", width=200)
+        self.gst_entry.pack(side="left", padx=10)
         
         # Row 2 of inputs (Address and Submit Button)
         row2 = ctk.CTkFrame(form_card, fg_color="transparent")
         row2.pack(fill="x", padx=20, pady=(0, 20))
         
-        self.address_var = ctk.StringVar()
-        ctk.CTkEntry(row2, textvariable=self.address_var, placeholder_text="Address", width=640).pack(side="left", padx=10)
+        self.address_entry = ctk.CTkEntry(row2, placeholder_text="Address", width=640)
+        self.address_entry.pack(side="left", padx=10)
         
         # Connect the button click to self.add_customer()
         ctk.CTkButton(row2, text="Add Customer", command=self.add_customer, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="left", padx=20)
@@ -107,7 +107,7 @@ class CustomerPage(ctk.CTkFrame):
         """
         Event handler for adding a new customer.
         """
-        name = self.name_var.get()
+        name = self.name_entry.get()
         
         # Basic data validation: Name is mandatory
         if not name:
@@ -117,18 +117,18 @@ class CustomerPage(ctk.CTkFrame):
         # Execute the database insertion
         self.db.add_customer(
             name, 
-            self.phone_var.get(), 
-            self.email_var.get(), 
-            self.gst_var.get(), 
-            self.address_var.get()
+            self.phone_entry.get(), 
+            self.email_entry.get(), 
+            self.gst_entry.get(), 
+            self.address_entry.get()
         )
         
         # Clear the input fields so the user can quickly type the next customer
-        self.name_var.set("")
-        self.phone_var.set("")
-        self.email_var.set("")
-        self.gst_var.set("")
-        self.address_var.set("")
+        self.name_entry.delete(0, 'end')
+        self.phone_entry.delete(0, 'end')
+        self.email_entry.delete(0, 'end')
+        self.gst_entry.delete(0, 'end')
+        self.address_entry.delete(0, 'end')
         
         # Refresh the table grid to show the newly added customer immediately
         self.load_customers()

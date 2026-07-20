@@ -45,39 +45,28 @@ class InventoryPage(ctk.CTkFrame):
         form_card.pack(fill="x", padx=30, pady=10)
         
         # Helper function to create a labeled input field
-        def create_input(parent, label_text, var, width):
+        def create_input(parent, label_text, width):
             wrapper = ctk.CTkFrame(parent, fg_color="transparent")
             wrapper.pack(side="left", padx=10)
             ctk.CTkLabel(wrapper, text=label_text, text_color="#374151", font=ctk.CTkFont(size=12, weight="bold")).pack(anchor="w", padx=2)
-            ctk.CTkEntry(wrapper, textvariable=var, placeholder_text=label_text, width=width).pack(fill="x")
-            return wrapper
+            entry = ctk.CTkEntry(wrapper, placeholder_text=label_text, width=width)
+            entry.pack(fill="x")
+            return entry
 
         row1 = ctk.CTkFrame(form_card, fg_color="transparent")
         row1.pack(fill="x", padx=20, pady=(15, 10))
         
-        self.name_var = ctk.StringVar()
-        create_input(row1, "Product Name", self.name_var, 200)
-        
-        self.category_var = ctk.StringVar()
-        create_input(row1, "Category", self.category_var, 150)
-        
-        self.hsn_var = ctk.StringVar()
-        create_input(row1, "HSN Code", self.hsn_var, 150)
+        self.name_entry = create_input(row1, "Product Name", 200)
+        self.category_entry = create_input(row1, "Category", 150)
+        self.hsn_entry = create_input(row1, "HSN Code", 150)
         
         row2 = ctk.CTkFrame(form_card, fg_color="transparent")
         row2.pack(fill="x", padx=20, pady=(0, 20))
         
-        self.cost_var = ctk.StringVar()
-        create_input(row2, "Cost Price", self.cost_var, 120)
-        
-        self.selling_var = ctk.StringVar()
-        create_input(row2, "Selling Price", self.selling_var, 120)
-        
-        self.gst_var = ctk.StringVar()
-        create_input(row2, "GST %", self.gst_var, 120)
-        
-        self.stock_var = ctk.StringVar()
-        create_input(row2, "Stock Qty", self.stock_var, 120)
+        self.cost_entry = create_input(row2, "Cost Price", 120)
+        self.selling_entry = create_input(row2, "Selling Price", 120)
+        self.gst_entry = create_input(row2, "GST %", 120)
+        self.stock_entry = create_input(row2, "Stock Qty", 120)
         
         # Add a wrapper for the button to align it nicely at the bottom
         btn_wrapper = ctk.CTkFrame(row2, fg_color="transparent")
@@ -115,7 +104,7 @@ class InventoryPage(ctk.CTkFrame):
         """
         Event handler for adding a new product.
         """
-        name = self.name_var.get()
+        name = self.name_entry.get()
         if not name:
             messagebox.showwarning("Validation Error", "Product Name is required.")
             return
@@ -123,10 +112,10 @@ class InventoryPage(ctk.CTkFrame):
         try:
             # We must wrap numerical inputs in float() or int() because UI fields return raw strings.
             # We use 'or 0' to prevent crashes if the user leaves the field totally blank.
-            cost = float(self.cost_var.get() or 0)
-            selling = float(self.selling_var.get() or 0)
-            gst = float(self.gst_var.get() or 0)
-            stock = int(self.stock_var.get() or 0)
+            cost = float(self.cost_entry.get() or 0)
+            selling = float(self.selling_entry.get() or 0)
+            gst = float(self.gst_entry.get() or 0)
+            stock = int(self.stock_entry.get() or 0)
         except ValueError:
             messagebox.showerror("Validation Error", "Cost Price, Selling Price, GST %, and Stock Qty must be numeric values.")
             return
@@ -134,8 +123,8 @@ class InventoryPage(ctk.CTkFrame):
         try:
             self.db.add_product(
                 name, 
-                self.category_var.get(), 
-                self.hsn_var.get(), 
+                self.category_entry.get(), 
+                self.hsn_entry.get(), 
                 cost, 
                 selling, 
                 gst, 
@@ -144,13 +133,13 @@ class InventoryPage(ctk.CTkFrame):
             )
             
             # Clear UI fields on success
-            self.name_var.set("")
-            self.category_var.set("")
-            self.hsn_var.set("")
-            self.cost_var.set("")
-            self.selling_var.set("")
-            self.gst_var.set("")
-            self.stock_var.set("")
+            self.name_entry.delete(0, 'end')
+            self.category_entry.delete(0, 'end')
+            self.hsn_entry.delete(0, 'end')
+            self.cost_entry.delete(0, 'end')
+            self.selling_entry.delete(0, 'end')
+            self.gst_entry.delete(0, 'end')
+            self.stock_entry.delete(0, 'end')
             
             # Refresh UI grid
             self.load_products()
