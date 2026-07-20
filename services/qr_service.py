@@ -71,3 +71,12 @@ class QRService:
         
         # Return both the path (so the PDF generator can embed it) and the hash (so the DB can store it)
         return path, qr_hash
+
+
+
+
+
+
+
+
+
