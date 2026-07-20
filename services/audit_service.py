@@ -7,7 +7,6 @@ Handles the logging of user actions across the system for security and auditing 
 Dependencies:
 - database.queries (To execute the log insert)
 
-Project: Smart ERP Billing System
 """
 
 from database.queries import DatabaseQueries
