@@ -7,8 +7,6 @@ It acts as a data transfer object between the database layer and the GUI/service
 
 Dependencies:
 - dataclasses
-
-Project: Smart ERP Billing System
 """
 
 from dataclasses import dataclass
