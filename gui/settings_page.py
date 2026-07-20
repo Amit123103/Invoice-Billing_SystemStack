@@ -14,6 +14,7 @@ Dependencies:
 import customtkinter as ctk
 from tkinter import messagebox, filedialog
 from database.queries import DatabaseQueries
+import shutil
 
 class SettingsPage(ctk.CTkFrame):
     """
@@ -63,7 +64,30 @@ class SettingsPage(ctk.CTkFrame):
         
         # Save Button
         save_btn = ctk.CTkButton(form_card, text="Save Settings", command=self.save_settings, font=ctk.CTkFont(weight="bold"), fg_color="#059669", hover_color="#047857", height=45, width=200)
-        save_btn.grid(row=4, column=0, columnspan=2, pady=40)
+        save_btn.grid(row=4, column=0, columnspan=2, pady=20)
+        
+        # Advanced Settings Section
+        adv_header = ctk.CTkFrame(self, fg_color="transparent")
+        adv_header.pack(fill="x", padx=30, pady=(10, 5))
+        ctk.CTkLabel(adv_header, text="Advanced Settings", font=ctk.CTkFont(size=20, weight="bold"), text_color="#111827").pack(side="left")
+        
+        adv_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        adv_card.pack(fill="x", padx=30, pady=5)
+        
+        # Theme Toggle
+        theme_frame = ctk.CTkFrame(adv_card, fg_color="transparent")
+        theme_frame.pack(fill="x", padx=20, pady=15)
+        ctk.CTkLabel(theme_frame, text="Application Theme", text_color="#4b5563", font=ctk.CTkFont(weight="bold")).pack(side="left")
+        
+        self.theme_var = ctk.StringVar(value=ctk.get_appearance_mode())
+        theme_menu = ctk.CTkOptionMenu(theme_frame, values=["Light", "Dark"], variable=self.theme_var, command=self.change_theme)
+        theme_menu.pack(side="right")
+        
+        # Backup Database
+        backup_frame = ctk.CTkFrame(adv_card, fg_color="transparent")
+        backup_frame.pack(fill="x", padx=20, pady=(0, 15))
+        ctk.CTkLabel(backup_frame, text="Data Management", text_color="#4b5563", font=ctk.CTkFont(weight="bold")).pack(side="left")
+        ctk.CTkButton(backup_frame, text="Backup Database", command=self.backup_database, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="right")
         
         # Bind mapping event to dynamically load data when shown
         self.bind("<Map>", lambda e: self.load_settings())
@@ -111,6 +135,25 @@ class SettingsPage(ctk.CTkFrame):
         )
         
         messagebox.showinfo("Success", "Company settings saved successfully!")
+
+    def change_theme(self, choice):
+        """Switches between Light and Dark mode."""
+        ctk.set_appearance_mode(choice)
+        
+    def backup_database(self):
+        """Creates a backup copy of the database."""
+        save_path = filedialog.asksaveasfilename(
+            defaultextension=".db",
+            initialfile="smart_erp_backup.db",
+            title="Save Database Backup",
+            filetypes=[("SQLite Database", "*.db")]
+        )
+        if save_path:
+            try:
+                shutil.copy2("smart_erp.db", save_path)
+                messagebox.showinfo("Success", f"Database backed up successfully to:\n{save_path}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to backup database: {str(e)}")
 
 
 
