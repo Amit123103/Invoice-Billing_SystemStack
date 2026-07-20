@@ -7,7 +7,6 @@ Defines the Payment model for tracking individual transactions made against invo
 Dependencies:
 - dataclasses
 
-Project: Smart ERP Billing System
 """
 
 from dataclasses import dataclass
