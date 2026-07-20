@@ -2,5 +2,9 @@ reportlab
 qrcode
 Pillow
 customtkinter
-pytest
-pytest-mock
+
+
+
+
+
+
