@@ -10,7 +10,6 @@ Dependencies:
 - database.queries (To verify the user against the database)
 - utils.auth (For hashing and verifying the password)
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
@@ -88,3 +87,9 @@ class LoginPage(ctk.CTkFrame):
         else:
             # Authentication failed! Show a native Windows error popup
             messagebox.showerror("Error", "Invalid username or password")
+
+
+
+
+
+
