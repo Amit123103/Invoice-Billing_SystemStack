@@ -47,3 +47,11 @@ class Product:
     
     # Foreign key reference to the Supplier who provides this product
     supplier_id: int
+
+
+
+
+
+
+
+
