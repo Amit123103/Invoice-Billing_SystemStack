@@ -295,3 +295,11 @@ class SettingsPage(ctk.CTkFrame):
 for name, content in files.items():
     with open(os.path.join(gui_dir, name), 'w', encoding='utf-8') as f:
         f.write(content)
+
+
+
+
+
+
+
+
