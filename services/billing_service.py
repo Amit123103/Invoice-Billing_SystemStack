@@ -8,7 +8,6 @@ It acts as the bridge between the GUI layer and the Database Queries.
 Dependencies:
 - database.queries
 
-Project: Smart ERP Billing System
 """
 
 from database.queries import DatabaseQueries
