@@ -10,7 +10,6 @@ Dependencies:
 - hashlib (For generating the tamper-proof hash)
 - os (For saving image files to disk)
 
-Project: Smart ERP Billing System
 """
 
 import qrcode
