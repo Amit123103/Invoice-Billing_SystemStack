@@ -3,3 +3,9 @@ qrcode
 Pillow
 customtkinter
 matplotlib
+
+
+
+
+
+
