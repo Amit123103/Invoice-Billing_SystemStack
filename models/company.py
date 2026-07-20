@@ -42,3 +42,10 @@ class Company:
     
     # File system path pointing to the company's logo image used in PDF generation
     logo_path: str
+
+
+
+
+
+
+
