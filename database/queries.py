@@ -209,6 +209,12 @@ class DatabaseQueries:
             item.get('discount', 0), item['gst_percentage'], item['total']
         ))
 
+    def update_invoice_status(self, invoice_number, new_status):
+        """
+        Updates the payment status of an invoice.
+        """
+        self.db.execute("UPDATE invoices SET status = ? WHERE invoice_number = ?", (new_status, invoice_number))
+
 
     # Purpose: Creates a generic audit log entry.
     def log_audit(self, user_id, action, target_type=None, target_id=None, details=None):

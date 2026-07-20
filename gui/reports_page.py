@@ -80,6 +80,13 @@ class ReportsPage(ctk.CTkFrame):
             
         self.tree.pack(fill="both", expand=True, padx=20, pady=20)
         
+        # Action Buttons for the selected row
+        action_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        action_frame.pack(fill="x", padx=20, pady=(0, 20))
+        
+        ctk.CTkButton(action_frame, text="Mark as Paid", command=lambda: self.update_status("Paid"), fg_color="#10b981", hover_color="#059669").pack(side="right", padx=10)
+        ctk.CTkButton(action_frame, text="Mark as Pending", command=lambda: self.update_status("Pending"), fg_color="#f59e0b", hover_color="#d97706").pack(side="right", padx=10)
+        
         # Bind the frame to update whenever it's raised/shown
         self.bind("<Map>", lambda e: self.load_data())
         self.load_data()
@@ -170,6 +177,29 @@ class ReportsPage(ctk.CTkFrame):
                     subprocess.call(['open', pdf_path])
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to generate report: {str(e)}")
+
+    def update_status(self, new_status):
+        """Updates the status of the selected invoice in the Treeview."""
+        selected_item = self.tree.selection()
+        if not selected_item:
+            messagebox.showwarning("Selection Required", "Please select an invoice from the table first.")
+            return
+            
+        # Get the invoice number from the selected row (column index 1)
+        item_values = self.tree.item(selected_item[0], "values")
+        if not item_values:
+            return
+            
+        invoice_number = item_values[1]
+        
+        # Update database
+        try:
+            self.db.update_invoice_status(invoice_number, new_status)
+            messagebox.showinfo("Success", f"Invoice {invoice_number} marked as {new_status}.")
+            # Reload to reflect changes
+            self.load_data()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to update status: {e}")
 
 
 
