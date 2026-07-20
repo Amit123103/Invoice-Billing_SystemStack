@@ -170,11 +170,15 @@ class DatabaseQueries:
             (product_id, quantity_change, reason, user_id)
         )
 
-    # Purpose: Inserts the main Invoice header data.
     def create_invoice(self, data):
         """
         Creates a new invoice record.
         """
+        # Validate that the requested company actually exists to prevent foreign key constraint failures
+        company_id = data.get('company_id', 1)
+        if not self.get_company(company_id):
+            company_id = None
+            
         # We extract data from the incoming dictionary safely using .get() to prevent KeyError on missing optional fields.
         cursor = self.db.execute('''
             INSERT INTO invoices (
@@ -183,7 +187,7 @@ class DatabaseQueries:
                 status, amount_paid, notes, created_by, qr_hash
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
-            data['invoice_number'], data.get('customer_id'), data.get('company_id', 1),
+            data['invoice_number'], data.get('customer_id'), company_id,
             data['subtotal'], data.get('discount', 0), data.get('cgst', 0),
             data.get('sgst', 0), data.get('igst', 0), data.get('total_tax', 0),
             data['total_amount'], data.get('payment_method'), data.get('status', 'Pending'),
