@@ -44,34 +44,47 @@ class InventoryPage(ctk.CTkFrame):
         form_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
         form_card.pack(fill="x", padx=30, pady=10)
         
+        # Helper function to create a labeled input field
+        def create_input(parent, label_text, var, width):
+            wrapper = ctk.CTkFrame(parent, fg_color="transparent")
+            wrapper.pack(side="left", padx=10)
+            ctk.CTkLabel(wrapper, text=label_text, text_color="#374151", font=ctk.CTkFont(size=12, weight="bold")).pack(anchor="w", padx=2)
+            ctk.CTkEntry(wrapper, textvariable=var, placeholder_text=label_text, width=width).pack(fill="x")
+            return wrapper
+
         row1 = ctk.CTkFrame(form_card, fg_color="transparent")
-        row1.pack(fill="x", padx=20, pady=(20, 10))
+        row1.pack(fill="x", padx=20, pady=(15, 10))
         
         self.name_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.name_var, placeholder_text="Product Name", width=200).pack(side="left", padx=10)
+        create_input(row1, "Product Name", self.name_var, 200)
         
         self.category_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.category_var, placeholder_text="Category", width=150).pack(side="left", padx=10)
+        create_input(row1, "Category", self.category_var, 150)
         
         self.hsn_var = ctk.StringVar()
-        ctk.CTkEntry(row1, textvariable=self.hsn_var, placeholder_text="HSN Code", width=150).pack(side="left", padx=10)
+        create_input(row1, "HSN Code", self.hsn_var, 150)
         
         row2 = ctk.CTkFrame(form_card, fg_color="transparent")
         row2.pack(fill="x", padx=20, pady=(0, 20))
         
         self.cost_var = ctk.StringVar()
-        ctk.CTkEntry(row2, textvariable=self.cost_var, placeholder_text="Cost Price", width=120).pack(side="left", padx=10)
+        create_input(row2, "Cost Price", self.cost_var, 120)
         
         self.selling_var = ctk.StringVar()
-        ctk.CTkEntry(row2, textvariable=self.selling_var, placeholder_text="Selling Price", width=120).pack(side="left", padx=10)
+        create_input(row2, "Selling Price", self.selling_var, 120)
         
         self.gst_var = ctk.StringVar()
-        ctk.CTkEntry(row2, textvariable=self.gst_var, placeholder_text="GST %", width=120).pack(side="left", padx=10)
+        create_input(row2, "GST %", self.gst_var, 120)
         
         self.stock_var = ctk.StringVar()
-        ctk.CTkEntry(row2, textvariable=self.stock_var, placeholder_text="Stock Qty", width=120).pack(side="left", padx=10)
+        create_input(row2, "Stock Qty", self.stock_var, 120)
         
-        ctk.CTkButton(row2, text="Add Product", command=self.add_product, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="left", padx=20)
+        # Add a wrapper for the button to align it nicely at the bottom
+        btn_wrapper = ctk.CTkFrame(row2, fg_color="transparent")
+        btn_wrapper.pack(side="left", padx=20)
+        # Empty label to match the height of the field labels so the button aligns with the text boxes
+        ctk.CTkLabel(btn_wrapper, text="").pack()
+        ctk.CTkButton(btn_wrapper, text="Add Product", command=self.add_product, fg_color="#2563eb", hover_color="#1d4ed8").pack()
         
         # ---------------------------------------------------------
         # Data Grid (Treeview) Card
