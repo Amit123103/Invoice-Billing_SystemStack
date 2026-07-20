@@ -12,6 +12,9 @@ Dependencies:
 
 import customtkinter as ctk
 from database.queries import DatabaseQueries
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from datetime import datetime, timedelta
 
 # This class defines the main Dashboard frame that wraps around all other pages.
 # It solves the problem of navigation by providing a persistent left-side menu and top header.
@@ -115,19 +118,13 @@ class Dashboard(ctk.CTkFrame):
         self.create_kpi_card(kpi_frame, "Total Products", self.products_var, "Active").pack(side="left", fill="both", expand=True, padx=10)
         
         # Build a placeholder for a large visual analytics chart
-        chart_frame = ctk.CTkFrame(self.home_frame, fg_color="#FFFFFF", corner_radius=12)
-        chart_frame.pack(fill="both", expand=True, padx=30, pady=20)
-        ctk.CTkLabel(chart_frame, text="Monthly Sales Analytics (Visual Placeholder)", font=ctk.CTkFont(size=18, weight="bold"), text_color="#111827").pack(anchor="nw", padx=20, pady=20)
+        self.chart_frame = ctk.CTkFrame(self.home_frame, fg_color="#FFFFFF", corner_radius=12)
+        self.chart_frame.pack(fill="both", expand=True, padx=30, pady=20)
+        ctk.CTkLabel(self.chart_frame, text="Recent Revenue Analytics", font=ctk.CTkFont(size=18, weight="bold"), text_color="#111827").pack(anchor="nw", padx=20, pady=10)
         
-        # Generate random vertical bars to simulate a modern bar chart UI
-        bars_frame = ctk.CTkFrame(chart_frame, fg_color="transparent")
-        bars_frame.pack(fill="both", expand=True, padx=20, pady=(0, 20))
-        for _ in range(12):
-            import random
-            h = random.randint(50, 200)
-            bar = ctk.CTkFrame(bars_frame, fg_color="#bfdbfe", width=40, height=h, corner_radius=6)
-            # pack(side="bottom") ensures the bars grow upwards like a real chart
-            bar.pack(side="left", padx=10)
+        self.chart_canvas_wrapper = ctk.CTkFrame(self.chart_frame, fg_color="transparent")
+        self.chart_canvas_wrapper.pack(fill="both", expand=True, padx=20, pady=(0, 20))
+        self.canvas_widget = None
 
         # Set the home screen as the default view
         self.show_home()
@@ -178,6 +175,55 @@ class Dashboard(ctk.CTkFrame):
         self.revenue_var.set(f"₹{total_revenue:,.2f}")
         self.customers_var.set(str(len(customers)))
         self.products_var.set(str(len(products)))
+
+        # Update Chart
+        self.update_chart(invoices)
+
+    def update_chart(self, invoices):
+        if self.canvas_widget:
+            self.canvas_widget.destroy()
+
+        # Group invoices by date for the last 7 days
+        daily_revenue = {}
+        for i in range(7):
+            date_str = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
+            daily_revenue[date_str] = 0
+
+        for inv in invoices:
+            created_at = inv.get('created_at', '')
+            if created_at and inv.get('status') in ('Paid', 'Pending', 'Partial'):
+                date_str = str(created_at).split(" ")[0]
+                if date_str in daily_revenue:
+                    daily_revenue[date_str] += inv.get('total_amount', 0)
+
+        dates = list(reversed(list(daily_revenue.keys())))
+        revenues = list(reversed(list(daily_revenue.values())))
+        # Use short format for x-axis (e.g. "Jul 21")
+        short_dates = [datetime.strptime(d, '%Y-%m-%d').strftime('%b %d') for d in dates]
+
+        # Create Matplotlib Figure
+        fig = Figure(figsize=(6, 3), dpi=100)
+        ax = fig.add_subplot(111)
+        
+        ax.plot(short_dates, revenues, color="#2563eb", marker="o", linewidth=2)
+        ax.fill_between(short_dates, revenues, alpha=0.1, color="#2563eb")
+        ax.set_ylabel("Revenue (₹)")
+        
+        # Styling the plot to match the modern dashboard
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_color('#d1d5db')
+        ax.spines['bottom'].set_color('#d1d5db')
+        ax.tick_params(colors='#4b5563')
+        ax.grid(axis='y', linestyle='--', alpha=0.5)
+
+        fig.tight_layout()
+
+        # Embed into Tkinter
+        canvas = FigureCanvasTkAgg(fig, master=self.chart_canvas_wrapper)
+        canvas.draw()
+        self.canvas_widget = canvas.get_tk_widget()
+        self.canvas_widget.pack(fill="both", expand=True)
 
     # Purpose:
     # Swaps the content area back to the home analytics view.
