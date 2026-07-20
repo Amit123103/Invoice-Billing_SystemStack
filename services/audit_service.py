@@ -44,3 +44,11 @@ class AuditService:
         """
         # Call the underlying database query wrapper to insert the row
         self.db.log_audit(user_id, action, target_type, target_id, details)
+
+
+
+
+
+
+
+
