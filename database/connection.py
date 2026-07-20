@@ -10,8 +10,7 @@ Dependencies:
 - os (For resolving file paths)
 - threading (To ensure thread-safety during instance creation)
 
-Author: Amit Kumar
-Project: Smart ERP Billing System
+
 """
 
 import sqlite3
