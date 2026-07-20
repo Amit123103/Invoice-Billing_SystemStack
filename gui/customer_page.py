@@ -10,7 +10,6 @@ Dependencies:
 - tkinter.messagebox (For error/success popups)
 - database.queries
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
@@ -150,3 +149,7 @@ class CustomerPage(ctk.CTkFrame):
         # Step 3: Insert each record as a new row in the Treeview
         for c in customers:
             self.tree.insert("", "end", values=(c['id'], c['name'], c['phone'], c['email'], c['gst_number'], c['address']))
+
+
+
+
