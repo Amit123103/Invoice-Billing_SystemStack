@@ -111,3 +111,10 @@ class SettingsPage(ctk.CTkFrame):
         )
         
         messagebox.showinfo("Success", "Company settings saved successfully!")
+
+
+
+
+
+
+
