@@ -11,6 +11,7 @@ Dependencies:
 """
 
 import customtkinter as ctk
+from database.queries import DatabaseQueries
 
 # This class defines the main Dashboard frame that wraps around all other pages.
 # It solves the problem of navigation by providing a persistent left-side menu and top header.
@@ -24,6 +25,7 @@ class Dashboard(ctk.CTkFrame):
         # Set the entire background to a modern light gray
         super().__init__(parent, fg_color="#F3F4F6")
         self.controller = controller
+        self.db = DatabaseQueries()
         
         # ---------------------------------------------------------
         # Persistent Left Sidebar Navigation
@@ -101,11 +103,16 @@ class Dashboard(ctk.CTkFrame):
         kpi_frame = ctk.CTkFrame(self.home_frame, fg_color="transparent")
         kpi_frame.pack(fill="x", padx=20, pady=10)
         
+        self.sales_var = ctk.StringVar(value="0")
+        self.revenue_var = ctk.StringVar(value="₹0.00")
+        self.customers_var = ctk.StringVar(value="0")
+        self.products_var = ctk.StringVar(value="0")
+        
         # Render 4 summary cards showing business health metrics
-        self.create_kpi_card(kpi_frame, "Total Sales", "1,284", "+12.5%").pack(side="left", fill="both", expand=True, padx=10)
-        self.create_kpi_card(kpi_frame, "Total Revenue", "$142,500", "+8.2%").pack(side="left", fill="both", expand=True, padx=10)
-        self.create_kpi_card(kpi_frame, "Total Customers", "856", "+24").pack(side="left", fill="both", expand=True, padx=10)
-        self.create_kpi_card(kpi_frame, "Total Products", "412", "Active").pack(side="left", fill="both", expand=True, padx=10)
+        self.create_kpi_card(kpi_frame, "Total Sales", self.sales_var, "+12.5%").pack(side="left", fill="both", expand=True, padx=10)
+        self.create_kpi_card(kpi_frame, "Total Revenue", self.revenue_var, "+8.2%").pack(side="left", fill="both", expand=True, padx=10)
+        self.create_kpi_card(kpi_frame, "Total Customers", self.customers_var, "+24").pack(side="left", fill="both", expand=True, padx=10)
+        self.create_kpi_card(kpi_frame, "Total Products", self.products_var, "Active").pack(side="left", fill="both", expand=True, padx=10)
         
         # Build a placeholder for a large visual analytics chart
         chart_frame = ctk.CTkFrame(self.home_frame, fg_color="#FFFFFF", corner_radius=12)
@@ -131,12 +138,12 @@ class Dashboard(ctk.CTkFrame):
     # Parameters:
     # parent (CTkFrame): The widget this card will be placed inside.
     # title (str): The label of the metric (e.g., "Total Revenue").
-    # value (str): The primary large number string.
+    # variable (ctk.StringVar): The variable holding the primary large number string.
     # badge (str): A small green indicator text (e.g., "+10%").
     #
     # Returns:
     # CTkFrame: The fully built card widget ready to be packed/gridded.
-    def create_kpi_card(self, parent, title, value, badge):
+    def create_kpi_card(self, parent, title, variable, badge):
         """
         Creates a modern KPI metric card.
         """
@@ -154,10 +161,23 @@ class Dashboard(ctk.CTkFrame):
         title_lbl = ctk.CTkLabel(card, text=title, text_color="#6b7280", font=ctk.CTkFont(size=13))
         title_lbl.pack(anchor="w", padx=15)
         
-        val_lbl = ctk.CTkLabel(card, text=value, text_color="#111827", font=ctk.CTkFont(size=24, weight="bold"))
+        val_lbl = ctk.CTkLabel(card, textvariable=variable, text_color="#111827", font=ctk.CTkFont(size=24, weight="bold"))
         val_lbl.pack(anchor="w", padx=15, pady=(0, 15))
         
         return card
+
+    def load_dashboard_data(self):
+        invoices = [dict(row) for row in self.db.get_all("invoices")]
+        customers = self.db.get_all("customers")
+        products = self.db.get_all("products")
+
+        total_sales = len(invoices)
+        total_revenue = sum(inv.get('total_amount', 0) for inv in invoices if inv.get('status') in ('Paid', 'Pending', 'Partial'))
+        
+        self.sales_var.set(str(total_sales))
+        self.revenue_var.set(f"₹{total_revenue:,.2f}")
+        self.customers_var.set(str(len(customers)))
+        self.products_var.set(str(len(products)))
 
     # Purpose:
     # Swaps the content area back to the home analytics view.
@@ -165,6 +185,8 @@ class Dashboard(ctk.CTkFrame):
         """
         Displays the main dashboard analytics view.
         """
+        self.load_dashboard_data()
+        
         # Hide any currently visible inner page (like CustomerPage or InventoryPage)
         for widget in self.content.winfo_children():
             widget.pack_forget()
