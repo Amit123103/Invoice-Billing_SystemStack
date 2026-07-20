@@ -205,6 +205,7 @@ class DatabaseQueries:
             item.get('discount', 0), item['gst_percentage'], item['total']
         ))
 
+
     # Purpose: Creates a generic audit log entry.
     def log_audit(self, user_id, action, target_type=None, target_id=None, details=None):
         """

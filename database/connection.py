@@ -9,7 +9,7 @@ Dependencies:
 - sqlite3 (Standard library DB engine)
 - os (For resolving file paths)
 - threading (To ensure thread-safety during instance creation)
-
+project
 
 """
 
