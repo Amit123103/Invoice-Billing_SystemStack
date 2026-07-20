@@ -72,16 +72,21 @@ class SmartERPApp(ctk.CTk):
             page_name = F.__name__
             
             # Instantiate the page. 
-            # We pass `self.container` as the parent widget where it will physically live.
-            # We pass `self` as the controller so the page can call self.controller.show_frame() to navigate.
-            frame = F(parent=self.container, controller=self)
+            if page_name in ["CustomerPage", "InventoryPage", "InvoicePage", "ReportsPage", "SettingsPage"]:
+                # These inner pages must physically live inside the Dashboard's content area
+                # otherwise they get hidden behind the dashboard due to window stacking rules.
+                parent_widget = self.frames["Dashboard"].content
+                frame = F(parent=parent_widget, controller=self)
+                # We do NOT grid these yet; they will be packed dynamically on demand.
+            else:
+                # Top-level pages (Login, Dashboard) live in the main container
+                parent_widget = self.container
+                frame = F(parent=parent_widget, controller=self)
+                # Stack top-level frames precisely on top of each other at row 0, col 0.
+                frame.grid(row=0, column=0, sticky="nsew")
             
             # Store it in our dictionary
             self.frames[page_name] = frame
-            
-            # Stack all frames precisely on top of each other at row 0, col 0.
-            # They are all invisible right now because we haven't 'raised' any of them.
-            frame.grid(row=0, column=0, sticky="nsew")
 
         # Kick off the application by forcing the Login screen to the top of the stack.
         self.show_frame("LoginPage")
