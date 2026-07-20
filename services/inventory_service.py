@@ -7,7 +7,6 @@ Manages product stock levels and triggers low-stock alerts.
 Dependencies:
 - database.queries
 
-Project: Smart ERP Billing System
 """
 
 from database.queries import DatabaseQueries
