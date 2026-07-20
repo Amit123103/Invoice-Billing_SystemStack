@@ -16,7 +16,6 @@ from database.connection import DatabaseConnection
 # Purpose:
 # Sets up the entire SQLite database structure from scratch if it doesn't already exist.
 # It creates all required tables with proper primary keys, foreign keys, and constraints.
-#
 # Returns:
 # None
 def create_tables():
@@ -207,6 +206,7 @@ def create_tables():
         INSERT OR IGNORE INTO users (id, username, password_hash, role) 
         VALUES (1, 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin')
     ''')
+
 
 # Standard python idiom: execute the script directly only if run from the command line, not if imported as a module
 if __name__ == '__main__':
