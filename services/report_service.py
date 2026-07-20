@@ -9,7 +9,6 @@ Dependencies:
 - reportlab.lib.pagesizes.A4 (Standard paper sizing)
 - os (For file paths)
 
-Project: Smart ERP Billing System
 """
 
 from reportlab.pdfgen import canvas
