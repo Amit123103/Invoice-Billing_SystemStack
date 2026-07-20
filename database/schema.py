@@ -1,9 +1,36 @@
+"""
+File: schema.py
+
+Purpose:
+Contains the Data Definition Language (DDL) logic to create the SQLite tables.
+It ensures that the database structure exists before the app attempts to read or write data.
+
+Dependencies:
+- database.connection (For connecting to the DB and executing the CREATE TABLE scripts)
+
+Author: Amit Kumar
+Project: Smart ERP Billing System
+"""
+
 from database.connection import DatabaseConnection
 
+# Purpose:
+# Sets up the entire SQLite database structure from scratch if it doesn't already exist.
+# It creates all required tables with proper primary keys, foreign keys, and constraints.
+#
+# Returns:
+# None
 def create_tables():
+    """
+    Initializes the database schema and creates necessary tables if they do not exist.
+    """
+    # Instantiate the singleton database connection manager
     db = DatabaseConnection()
     
+    # ---------------------------------------------------------
     # Users Table
+    # Stores authentication and role data for employees.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +41,10 @@ def create_tables():
         )
     ''')
 
-    # Company Table
+    # ---------------------------------------------------------
+    # Companies Table
+    # Stores the primary business profile generating the invoices.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS companies (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,7 +58,10 @@ def create_tables():
         )
     ''')
     
+    # ---------------------------------------------------------
     # Customers Table
+    # Stores client details for billing and CRM purposes.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS customers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +74,10 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Suppliers Table
+    # Stores vendor information from whom products are purchased.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS suppliers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,7 +89,12 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Products Table
+    # The central inventory table containing pricing and stock levels.
+    # ---------------------------------------------------------
+    # FOREIGN KEY constraint links this product to a supplier. ON DELETE SET NULL ensures 
+    # that if a supplier is deleted, the product remains but the supplier_id becomes NULL.
     db.execute('''
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,7 +111,10 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Invoices Table
+    # Stores the header/totals data for a financial bill.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS invoices (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -101,7 +145,11 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Invoice Items Table
+    # Stores the individual products sold within a specific invoice.
+    # ---------------------------------------------------------
+    # ON DELETE CASCADE ensures that if an invoice is deleted, all its items are automatically deleted too.
     db.execute('''
         CREATE TABLE IF NOT EXISTS invoice_items (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -117,7 +165,10 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Inventory Logs Table
+    # Keeps a historical audit trail of stock additions and deductions.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS inventory_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -131,7 +182,10 @@ def create_tables():
         )
     ''')
 
+    # ---------------------------------------------------------
     # Audit Logs Table
+    # Tracks user actions for security and accountability.
+    # ---------------------------------------------------------
     db.execute('''
         CREATE TABLE IF NOT EXISTS audit_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -145,12 +199,17 @@ def create_tables():
         )
     ''')
     
-    # Insert Default Admin User (password: admin123 hash)
+    # ---------------------------------------------------------
+    # Default Admin User
+    # ---------------------------------------------------------
+    # We use INSERT OR IGNORE so this query safely fails if the admin already exists, preventing duplicates.
+    # '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' is the SHA-256 hash for 'admin123'.
     db.execute('''
         INSERT OR IGNORE INTO users (id, username, password_hash, role) 
         VALUES (1, 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin')
     ''')
 
+# Standard python idiom: execute the script directly only if run from the command line, not if imported as a module
 if __name__ == '__main__':
     create_tables()
     print("Database tables created successfully.")
