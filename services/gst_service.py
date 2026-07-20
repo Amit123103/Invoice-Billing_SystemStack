@@ -7,7 +7,6 @@ Centralizes all Goods and Services Tax (GST) mathematical calculations.
 Dependencies:
 - None
 
-Project: Smart ERP Billing System
 """
 
 # This class isolates tax calculations.
