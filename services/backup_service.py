@@ -8,8 +8,6 @@ Dependencies:
 - shutil (For copying files safely)
 - os (For file paths)
 - datetime (To timestamp backup files)
-
-Project: Smart ERP Billing System
 """
 
 import shutil
