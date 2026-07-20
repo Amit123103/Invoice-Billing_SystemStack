@@ -10,7 +10,6 @@ Dependencies:
 - tkinter.messagebox
 - database.queries
 
-Project: Smart ERP Billing System
 """
 
 import customtkinter as ctk
@@ -149,3 +148,7 @@ class InventoryPage(ctk.CTkFrame):
         # Fetch new data and insert rows
         for p in self.db.get_all("products"):
             self.tree.insert("", "end", values=(p['id'], p['name'], p['category'], p['hsn_code'], p['cost_price'], p['selling_price'], p['gst_percentage'], p['stock_quantity']))
+
+
+
+
