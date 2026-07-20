@@ -8,7 +8,6 @@ This acts as a model to hold company profile information (like name, GST, logo).
 Dependencies:
 - dataclasses (For auto-generating class boilerplate like __init__)
 
-Project: Smart ERP Billing System
 """
 
 from dataclasses import dataclass
