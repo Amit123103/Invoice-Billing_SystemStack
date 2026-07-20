@@ -34,3 +34,11 @@ class Supplier:
     
     # Physical or billing address of the supplier
     address: str
+
+
+
+
+
+
+
+
