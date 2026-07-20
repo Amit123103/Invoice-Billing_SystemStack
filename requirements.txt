@@ -2,3 +2,9 @@ reportlab
 qrcode
 Pillow
 customtkinter
+
+
+
+
+
+
