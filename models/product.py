@@ -7,7 +7,6 @@ Defines the core Product data model which represents items that can be sold or t
 Dependencies:
 - dataclasses
 
-Project: Smart ERP Billing System
 """
 
 from dataclasses import dataclass
