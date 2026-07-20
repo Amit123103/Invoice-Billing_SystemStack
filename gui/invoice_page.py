@@ -18,12 +18,13 @@ Dependencies:
 """
 
 import customtkinter as ctk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 from database.queries import DatabaseQueries
 from services.billing_service import BillingService
 from services.qr_service import QRService
 from services.report_service import ReportService
 import datetime
+import os
 
 # This class provides the Billing interface.
 # It solves the problem of cashiers needing to manually calculate taxes and discounts
@@ -327,10 +328,27 @@ class InvoicePage(ctk.CTkFrame):
             self.billing.generate_invoice(invoice_data, self.cart_items)
             
             # Phase 2: Paint the PDF Document and save it to disk
-            self.report_service.generate_invoice_pdf(invoice_data, self.cart_items, qr_path)
+            save_path = filedialog.asksaveasfilename(
+                defaultextension=".pdf",
+                initialfile=f"{inv_number}.pdf",
+                title="Save Invoice PDF",
+                filetypes=[("PDF Files", "*.pdf")]
+            )
             
-            # Phase 3: Notify cashier of success
-            messagebox.showinfo("Success", f"Invoice {inv_number} generated successfully!")
+            if save_path:
+                pdf_path = self.report_service.generate_invoice_pdf(invoice_data, self.cart_items, qr_path, save_path)
+                # Phase 3: Notify cashier of success
+                messagebox.showinfo("Success", f"Invoice {inv_number} generated successfully!\nSaved to: {save_path}")
+                
+                # Open PDF automatically
+                if os.name == 'nt':
+                    os.startfile(save_path)
+                else:
+                    import subprocess
+                    subprocess.call(['open', save_path])
+            else:
+                pdf_path = self.report_service.generate_invoice_pdf(invoice_data, self.cart_items, qr_path)
+                messagebox.showinfo("Success", f"Invoice {inv_number} generated successfully!")
             
             # Phase 4: Prepare the UI for the next customer
             self.clear_cart()

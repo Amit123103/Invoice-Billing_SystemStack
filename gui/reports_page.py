@@ -11,8 +11,10 @@ Dependencies:
 """
 
 import customtkinter as ctk
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
+import os
 from database.queries import DatabaseQueries
+from services.report_service import ReportService
 
 class ReportsPage(ctk.CTkFrame):
     """
@@ -23,14 +25,23 @@ class ReportsPage(ctk.CTkFrame):
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
         self.db = DatabaseQueries()
+        self.report_service = ReportService()
+        
+        # Data storage for PDF generation
+        self.last_metrics = {}
+        self.last_invoices_data = []
         
         # Header Section
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=30, pady=(20, 10))
         ctk.CTkLabel(header, text="Business Reports", font=ctk.CTkFont(size=24, weight="bold"), text_color="#111827").pack(side="left")
         
-        # Refresh Button
-        ctk.CTkButton(header, text="Refresh Data", command=self.load_data, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="right")
+        # Refresh and Download Buttons
+        btn_frame = ctk.CTkFrame(header, fg_color="transparent")
+        btn_frame.pack(side="right")
+        
+        ctk.CTkButton(btn_frame, text="Download PDF Report", command=self.generate_pdf_report, fg_color="#10b981", hover_color="#059669").pack(side="left", padx=10)
+        ctk.CTkButton(btn_frame, text="Refresh Data", command=self.load_data, fg_color="#2563eb", hover_color="#1d4ed8").pack(side="left")
         
         # Summary Cards Container
         cards_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -98,6 +109,14 @@ class ReportsPage(ctk.CTkFrame):
         self.customers_var.set(str(total_customers))
         self.products_var.set(str(total_products))
         
+        self.last_metrics = {
+            'revenue': f"₹{total_revenue:,.2f}",
+            'invoices': str(total_invoices),
+            'customers': str(total_customers),
+            'products': str(total_products)
+        }
+        self.last_invoices_data = []
+        
         # Clear treeview
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -117,6 +136,40 @@ class ReportsPage(ctk.CTkFrame):
                 amt_str, 
                 inv.get('status', 'N/A')
             ))
+            self.last_invoices_data.append({
+                'date': date_str,
+                'number': inv.get('invoice_number', 'N/A'),
+                'customer': cust_name,
+                'amount': amt_str,
+                'status': inv.get('status', 'N/A')
+            })
+
+    def generate_pdf_report(self):
+        """Generates and opens the business report PDF"""
+        if not self.last_invoices_data:
+            messagebox.showwarning("Warning", "No data available to generate report.")
+            return
+            
+        save_path = filedialog.asksaveasfilename(
+            defaultextension=".pdf",
+            initialfile="Business_Report.pdf",
+            title="Save Business Report",
+            filetypes=[("PDF Files", "*.pdf")]
+        )
+        
+        if save_path:
+            try:
+                pdf_path = self.report_service.generate_business_report_pdf(self.last_metrics, self.last_invoices_data, save_path)
+                messagebox.showinfo("Success", f"Report generated successfully!\nSaved to: {pdf_path}")
+                
+                # Open PDF automatically
+                if os.name == 'nt':
+                    os.startfile(pdf_path)
+                else:
+                    import subprocess
+                    subprocess.call(['open', pdf_path])
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to generate report: {str(e)}")
 
 
 
