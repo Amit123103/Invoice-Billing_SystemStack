@@ -38,3 +38,7 @@ class Customer:
     
     # Billing address where products/invoices will be sent
     address: str
+
+
+
+
