@@ -123,10 +123,10 @@ The main goal of this project is to simplify business management by providing a 
 
 ##                                 TEAM Member 1
 
-Team Member 1 – Authentication & Dashboard Developer
-Role
+## Team Member 1 – Authentication & Dashboard Developer
+## Role
 
-Frontend + Backend
+# Frontend + Backend
 
 Responsibilities
 Login System
