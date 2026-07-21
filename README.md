@@ -120,6 +120,9 @@ The main goal of this project is to simplify business management by providing a 
 ---
 
 ## 👨‍💻 Developed By
+
+
+
 Team Member 1 – Authentication & Dashboard Developer
 Role
 
