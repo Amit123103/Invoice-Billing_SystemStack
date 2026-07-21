@@ -224,10 +224,10 @@ Backend
 
 ###                                    TEAM Member 3    
 
-Team Member 3 – Customer & Billing Developer
-Role
+## Team Member 3 – Customer & Billing Developer
+## Role
 
-Customer Management + Billing
+# Customer Management + Billing
 
 Responsibilities
 Customer Module
