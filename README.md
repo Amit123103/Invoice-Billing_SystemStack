@@ -7,7 +7,7 @@ Smart ERP Billing System is a comprehensive desktop application designed to stre
 
 Click below to view the complete project documentation.
 
-📘 [Smart ERP Billing System Documentation](docs/billing.pdf)
+📘 [Smart ERP Billing System Documentation](billing.pdf)
 
 ## Key Features
 - **Secure Login:** Access control to ensure secure usage of the system.
