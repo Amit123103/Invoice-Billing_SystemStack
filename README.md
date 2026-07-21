@@ -3,6 +3,12 @@
 ## Overview
 Smart ERP Billing System is a comprehensive desktop application designed to streamline billing, inventory management, and customer relations for businesses. Built with a modern Graphical User Interface (GUI) using Python and CustomTkinter, it provides a clean, user-friendly experience for day-to-day business operations.
 
+## 📄 Project Documentation
+
+Click below to view the complete project documentation.
+
+📘 [Smart ERP Billing System Documentation](docs/billing.pdf)
+
 ## Key Features
 - **Secure Login:** Access control to ensure secure usage of the system.
 - **Interactive Dashboard:** Get a quick overview of business metrics and navigate easily between different modules.
