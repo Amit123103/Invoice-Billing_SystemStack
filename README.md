@@ -360,10 +360,10 @@ Backend
 ###                             TEAM Member 5
 
 
-Team Member 5 – Database, Integration, Testing & Deployment
-Role
+### Team Member 5 – Database, Integration, Testing & Deployment
+## Role
 
-Backend + Database + Final Integration
+## Backend + Database + Final Integration
 
 Responsibilities
 Database
