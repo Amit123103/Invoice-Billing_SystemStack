@@ -63,7 +63,9 @@ This project is suitable for small businesses and shops that want to manage sale
 
 ## ✨ Features
 
+# Products Add                                              # report
 
+![Products](images/product.png)                           ![Report](images/report.png)
 
 - 🔐 Secure login system
 - 📊 Simple dashboard with business overview
@@ -85,6 +87,9 @@ This project is suitable for small businesses and shops that want to manage sale
 
 ---
 
+# Invoice Screen
+
+![Invoice](images/invoice.png)
 ## 📂 Project Structure
 
 ```text
@@ -99,7 +104,9 @@ Smart-ERP-Billing-System/
 ├── qrcodes/           # Generated QR codes
 └── requirements.txt   # Required Python packages
 ```
+# Settings
 
+![Settings](images/settings.png)
 ---
 
 ## 🚀 How to Run
