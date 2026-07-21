@@ -49,6 +49,10 @@ Click below to view the complete project documentation.
    ```
 # 🧾 Smart ERP Billing System
 
+# Dshboard Screen
+
+![dashboard](images/dashboard.png)
+
 ## 📌 About the Project
 
 Smart ERP Billing System is a desktop application built using Python to help businesses manage their daily operations in one place. It provides an easy-to-use interface for handling customers, products, billing, and reports. The application is designed with CustomTkinter, making it simple, modern, and user-friendly.
@@ -58,6 +62,8 @@ This project is suitable for small businesses and shops that want to manage sale
 ---
 
 ## ✨ Features
+
+
 
 - 🔐 Secure login system
 - 📊 Simple dashboard with business overview
