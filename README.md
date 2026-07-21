@@ -171,10 +171,10 @@ Backend Files: 6
 ###                                  TEAM Member 2
 
 
-Team Member 2 – Inventory Management Developer
-Role
+## Team Member 2 – Inventory Management Developer
+## Role
 
-Inventory & Product Management
+# Inventory & Product Management
 
 Responsibilities
 Product Management
