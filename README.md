@@ -213,6 +213,55 @@ Backend
 
 
 
+Team Member 3 – Customer & Billing Developer
+Role
+
+Customer Management + Billing
+
+Responsibilities
+Customer Module
+Add Customer
+Edit Customer
+Delete Customer
+Search Customer
+Customer History
+Billing Module
+Product Selection
+Shopping Cart
+Quantity Update
+Discount
+GST
+Grand Total
+Payment Method
+Cash Payment
+UPI Payment
+Card Payment
+Bill Calculation
+Tax
+Discount
+Total
+Balance
+Change Return
+Database Tables
+customers
+bills
+Deliverables
+Customer Module
+Billing Screen
+Cart System
+Estimated Work
+
+UI Pages
+
+5
+
+Database
+
+2 Tables
+
+Backend
+
+7 Files
 
 
 
