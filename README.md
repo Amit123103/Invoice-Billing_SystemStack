@@ -114,6 +114,50 @@ The main goal of this project is to simplify business management by providing a 
 ---
 
 ## 👨‍💻 Developed By
+Team Member 1 – Authentication & Dashboard Developer
+Role
+
+Frontend + Backend
+
+Responsibilities
+Login System
+User Login
+Secure Authentication
+Password Validation
+Forgot Password
+Logout
+Session Management
+Dashboard
+Dashboard UI
+Statistics Cards
+Quick Navigation
+Recent Sales
+Recent Customers
+Revenue Summary
+Low Stock Alerts
+User Management
+Add User
+Edit User
+Delete User
+Roles (Admin, Cashier)
+Settings
+Business Information
+Company Logo
+GST Number
+Currency
+Theme Settings
+Database Tables
+users
+settings
+Deliverables
+Login Page
+Dashboard
+User Module
+Settings Module
+Estimated Work
+UI Screens: 5
+Database Tables: 2
+Backend Files: 6
 
 
 
