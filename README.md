@@ -344,3 +344,108 @@ Backend
 
 9 Files
 
+Team Member 5 – Database, Integration, Testing & Deployment
+Role
+
+Backend + Database + Final Integration
+
+Responsibilities
+Database
+
+Design SQLite Database
+
+Create Tables
+
+Relationships
+
+Indexes
+
+Foreign Keys
+
+Triggers
+
+Backup
+
+Restore
+
+API / Service Layer
+
+Database Connection
+
+CRUD Operations
+
+Validation
+
+Logging
+
+Exception Handling
+
+Testing
+
+Unit Testing
+
+Integration Testing
+
+System Testing
+
+Bug Fixing
+
+Performance Testing
+
+Security Testing
+
+Documentation
+
+README
+
+Installation Guide
+
+User Manual
+
+Developer Guide
+
+SRS
+
+Project Report
+
+Deployment
+
+Executable (.exe)
+
+Packaging
+
+Requirements
+
+GitHub
+
+Release
+
+Deliverables
+
+Database
+
+Integration
+
+Testing
+
+Deployment
+
+Documentation
+
+Estimated Work
+
+Database Tables
+
+All Tables
+
+Testing
+
+Complete
+
+Documentation
+
+Complete
+
+Deployment
+
+Complete
