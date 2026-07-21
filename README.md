@@ -160,7 +160,56 @@ Database Tables: 2
 Backend Files: 6
 
 
+Team Member 2 – Inventory Management Developer
+Role
 
+Inventory & Product Management
+
+Responsibilities
+Product Management
+Add Product
+Update Product
+Delete Product
+Search Product
+Product Categories
+Inventory
+Stock In
+Stock Out
+Quantity Update
+Low Stock Alert
+Barcode Support
+QR Code Generation
+Supplier Module
+Add Supplier
+Edit Supplier
+Delete Supplier
+Purchase History
+Purchase Module
+Purchase Entry
+Purchase Invoice
+Purchase Return
+Database Tables
+products
+categories
+suppliers
+purchases
+Deliverables
+Inventory Module
+Supplier Module
+Purchase Module
+Estimated Work
+
+UI Pages
+
+6
+
+Database Tables
+
+4
+
+Backend
+
+8 Files
 
 
 
