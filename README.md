@@ -264,5 +264,83 @@ Backend
 7 Files
 
 
+Team Member 4 – Invoice, Reports & Printing Developer
+Role
 
+Invoice Management
+
+Responsibilities
+Invoice Module
+Generate Invoice
+Print Invoice
+Save Invoice
+Invoice History
+Search Invoice
+Download PDF
+QR Code
+Barcode
+Reports
+
+Daily Sales
+
+Weekly Sales
+
+Monthly Sales
+
+Yearly Sales
+
+Inventory Report
+
+Customer Report
+
+Product Report
+
+Purchase Report
+
+Profit Report
+
+GST Report
+
+Graphs
+
+Sales Graph
+
+Revenue Graph
+
+Inventory Graph
+
+Best Selling Products
+
+Export
+
+Excel
+
+PDF
+
+CSV
+
+Database Tables
+invoices
+invoice_items
+Deliverables
+
+Invoice Module
+
+Reporting Module
+
+Printing Module
+
+Estimated Work
+
+UI
+
+5 Pages
+
+Database
+
+2 Tables
+
+Backend
+
+9 Files
 
