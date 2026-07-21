@@ -277,10 +277,10 @@ Backend
 
 ###                                      TEAM Member 4
 
-Team Member 4 – Invoice, Reports & Printing Developer
-Role
+## Team Member 4 – Invoice, Reports & Printing Developer
+# Role
 
-Invoice Management
+# Invoice Management
 
 Responsibilities
 Invoice Module
