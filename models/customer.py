@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : customer.py
+#
+# Team Member :
+# Team Member 3
+#
+# Module :
+# Customer & Billing
+#
+# Responsibilities :
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+#
+# Developed By :
+# Team Member 3
+############################################################
 """
 File: customer.py
 
@@ -9,12 +30,28 @@ Dependencies:
 - dataclasses
 """
 
+###########################################################
+# Team Member 3
+# Module: Customer & Billing
+# Completed:
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+###########################################################
 from dataclasses import dataclass
 
 # This class manages the representation of a single Customer entity.
 # It exists so we can safely and predictably pass customer data across the app
 # (like passing a Customer object to the Invoice generation service).
 # Its responsibility is purely data storage and type definition.
+# ---------------------------------------------
+# Team Member 3
+# Class: Customer
+# Purpose:
+# Data container for a Customer record.
+# ---------------------------------------------
 @dataclass
 class Customer:
     """

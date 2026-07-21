@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : backup_service.py
+#
+# Team Member :
+# Team Member 5
+#
+# Module :
+# Database & Integration
+#
+# Responsibilities :
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+#
+# Developed By :
+# Team Member 5
+############################################################
 """
 File: backup_service.py
 
@@ -10,6 +31,16 @@ Dependencies:
 - datetime (To timestamp backup files)
 """
 
+###########################################################
+# Team Member 5
+# Module: Database & Integration
+# Completed:
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+###########################################################
 import shutil
 import os
 import datetime
@@ -17,11 +48,23 @@ import datetime
 # This class manages database redundancy.
 # It solves the problem of data loss by creating isolated copies of the `smart_erp.db` file.
 # Its responsibility is reading the main DB and copying it to a safe backup directory.
+# ---------------------------------------------
+# Team Member 5
+# Class: BackupService
+# Purpose:
+# Service class responsible for creating database backups.
+# ---------------------------------------------
 class BackupService:
     """
     Service class responsible for creating database backups.
     """
     
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self):
         # Identify the root directory of the project
         self.root_dir = os.path.dirname(os.path.dirname(__file__))
@@ -38,6 +81,13 @@ class BackupService:
     #
     # Returns:
     # str: The path to the newly created backup file.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: create_backup
+    # Purpose:
+    # Creates a timestamped copy of the main database.
+    # str: Path to the generated backup file, or None if the source DB doesn't exist.
+    # ---------------------------------------------
     def create_backup(self):
         """
         Creates a timestamped copy of the main database.

@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : supplier.py
+#
+# Team Member :
+# Team Member 2
+#
+# Module :
+# Inventory Management
+#
+# Responsibilities :
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+#
+# Developed By :
+# Team Member 2
+############################################################
 """
 File: supplier.py
 
@@ -8,12 +28,27 @@ Dependencies:
 - dataclasses
 """
 
+###########################################################
+# Team Member 2
+# Module: Inventory Management
+# Completed:
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+###########################################################
 from dataclasses import dataclass
 
 # This class holds vendor/supplier information.
 # It exists to give a structured schema to the individuals or companies 
 # supplying inventory to the ERP system.
 # Its primary responsibility is basic data encapsulation.
+# ---------------------------------------------
+# Team Member 2
+# Class: Supplier
+# Purpose:
+# Data container for a Supplier record.
+# ---------------------------------------------
 @dataclass
 class Supplier:
     """

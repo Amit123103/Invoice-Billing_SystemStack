@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : product.py
+#
+# Team Member :
+# Team Member 2
+#
+# Module :
+# Inventory Management
+#
+# Responsibilities :
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+#
+# Developed By :
+# Team Member 2
+############################################################
 """
 File: product.py
 
@@ -9,12 +29,27 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 2
+# Module: Inventory Management
+# Completed:
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+###########################################################
 from dataclasses import dataclass
 
 # This class defines what a Product looks like in our Python code.
 # It solves the problem of inconsistently referencing product attributes 
 # by enforcing strict variable names and types.
 # Its main responsibility is to hold financial, taxation, and stock data for a single item.
+# ---------------------------------------------
+# Team Member 2
+# Class: Product
+# Purpose:
+# Data container for an Inventory Product.
+# ---------------------------------------------
 @dataclass
 class Product:
     """

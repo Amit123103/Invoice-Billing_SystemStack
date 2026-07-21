@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : inventory_page.py
+#
+# Team Member :
+# Team Member 2
+#
+# Module :
+# Inventory Management
+#
+# Responsibilities :
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+#
+# Developed By :
+# Team Member 2
+############################################################
 """
 File: inventory_page.py
 
@@ -12,6 +32,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 2
+# Module: Inventory Management
+# Completed:
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+###########################################################
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database.queries import DatabaseQueries
@@ -19,11 +48,23 @@ from database.queries import DatabaseQueries
 # This class handles the Inventory Management screen.
 # It solves the problem of allowing users to define what they are selling and set prices/taxes.
 # Its responsibility is to provide a form for product creation and a table to view stock levels.
+# ---------------------------------------------
+# Team Member 2
+# Class: InventoryPage
+# Purpose:
+# GUI Frame for managing Inventory Products.
+# ---------------------------------------------
 class InventoryPage(ctk.CTkFrame):
     """
     GUI Frame for managing Inventory Products.
     """
     
+    # ---------------------------------------------
+    # Team Member 2
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
@@ -45,6 +86,12 @@ class InventoryPage(ctk.CTkFrame):
         form_card.pack(fill="x", padx=30, pady=10)
         
         # Helper function to create a labeled input field
+        # ---------------------------------------------
+        # Team Member 2
+        # Function: create_input
+        # Purpose:
+        # Handles logic for create input
+        # ---------------------------------------------
         def create_input(parent, label_text, width):
             wrapper = ctk.CTkFrame(parent, fg_color="transparent")
             wrapper.pack(side="left", padx=10)
@@ -109,6 +156,12 @@ class InventoryPage(ctk.CTkFrame):
 
     # Purpose:
     # Reads the input fields, converts strings to floats/ints, and saves the new product.
+    # ---------------------------------------------
+    # Team Member 2
+    # Function: add_product
+    # Purpose:
+    # Event handler for adding a new product.
+    # ---------------------------------------------
     def add_product(self):
         """
         Event handler for adding a new product.
@@ -159,6 +212,12 @@ class InventoryPage(ctk.CTkFrame):
 
     # Purpose:
     # Fetches all products and updates the Treeview.
+    # ---------------------------------------------
+    # Team Member 2
+    # Function: load_products
+    # Purpose:
+    # Refreshes the product data grid.
+    # ---------------------------------------------
     def load_products(self, search_query=""):
         """
         Refreshes the product data grid.

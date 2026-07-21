@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : queries.py
+#
+# Team Member :
+# Team Member 5
+#
+# Module :
+# Database & Integration
+#
+# Responsibilities :
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+#
+# Developed By :
+# Team Member 5
+############################################################
 """
 File: queries.py
 
@@ -11,17 +32,39 @@ Dependencies:
 Project: Smart ERP Billing System
 """
 
+###########################################################
+# Team Member 5
+# Module: Database & Integration
+# Completed:
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+###########################################################
 from database.connection import DatabaseConnection
 
 # This class encapsulates all database queries into reusable methods.
 # It solves the problem of scattering raw SQL strings throughout the GUI and Services,
 # which makes code hard to maintain and prone to security vulnerabilities.
 # Its responsibility is purely executing CRUD operations safely against the database.
+# ---------------------------------------------
+# Team Member 5
+# Class: DatabaseQueries
+# Purpose:
+# Central repository for all SQL queries used by the Smart ERP.
+# ---------------------------------------------
 class DatabaseQueries:
     """
     Central repository for all SQL queries used by the Smart ERP.
     """
     
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self):
         # Initialize the database connection once when the class is instantiated
         self.db = DatabaseConnection()
@@ -33,6 +76,12 @@ class DatabaseQueries:
     # Purpose: Retrieves a user record given a username for authentication.
     # Parameters: username (str)
     # Returns: sqlite3.Row object if found, else None
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: get_user_by_username
+    # Purpose:
+    # Fetches a user from the database by their unique username.
+    # ---------------------------------------------
     def get_user_by_username(self, username):
         """
         Fetches a user from the database by their unique username.
@@ -41,6 +90,12 @@ class DatabaseQueries:
         return self.db.fetchone("SELECT * FROM users WHERE username = ?", (username,))
     
     # Purpose: Registers a new user employee into the system.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: create_user
+    # Purpose:
+    # Inserts a new user record.
+    # ---------------------------------------------
     def create_user(self, username, password_hash, role):
         """
         Inserts a new user record.
@@ -56,6 +111,12 @@ class DatabaseQueries:
     # -------------------------------------------------------------------------
     
     # Purpose: Retrieves the primary company profile. Default ID is 1.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: get_company
+    # Purpose:
+    # Fetches company profile settings.
+    # ---------------------------------------------
     def get_company(self, company_id=1):
         """
         Fetches company profile settings.
@@ -63,6 +124,12 @@ class DatabaseQueries:
         return self.db.fetchone("SELECT * FROM companies WHERE id = ?", (company_id,))
 
     # Purpose: Updates or creates the company profile.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: save_company
+    # Purpose:
+    # Upserts (Updates or Inserts) the company settings.
+    # ---------------------------------------------
     def save_company(self, name, gst_number, address, phone, email, logo_path, company_id=1):
         """
         Upserts (Updates or Inserts) the company settings.
@@ -89,6 +156,12 @@ class DatabaseQueries:
     # -------------------------------------------------------------------------
     
     # Purpose: Grabs all records from a specified table.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: get_all
+    # Purpose:
+    # Retrieves all rows from a given table.
+    # ---------------------------------------------
     def get_all(self, table_name):
         """
         Retrieves all rows from a given table.
@@ -99,6 +172,12 @@ class DatabaseQueries:
         return self.db.fetchall(f"SELECT * FROM {table_name}")
 
     # Purpose: Fetches a single record by its primary key ID.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: get_by_id
+    # Purpose:
+    # Retrieves a single row by ID.
+    # ---------------------------------------------
     def get_by_id(self, table_name, record_id):
         """
         Retrieves a single row by ID.
@@ -106,6 +185,12 @@ class DatabaseQueries:
         return self.db.fetchone(f"SELECT * FROM {table_name} WHERE id = ?", (record_id,))
 
     # Purpose: Deletes a specific row by its ID.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: delete_by_id
+    # Purpose:
+    # Deletes a row by ID.
+    # ---------------------------------------------
     def delete_by_id(self, table_name, record_id):
         """
         Deletes a row by ID.
@@ -117,6 +202,12 @@ class DatabaseQueries:
     # -------------------------------------------------------------------------
     
     # Purpose: Finds customers matching a specific search keyword.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: search_customers
+    # Purpose:
+    # Searches the customer table across multiple columns.
+    # ---------------------------------------------
     def search_customers(self, search_term):
         """
         Searches the customer table across multiple columns.
@@ -129,6 +220,12 @@ class DatabaseQueries:
         ''', (term, term, term, term))
 
     # Purpose: Inserts a new customer into the DB.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: add_customer
+    # Purpose:
+    # Adds a new customer.
+    # ---------------------------------------------
     def add_customer(self, name, phone, email, gst, address):
         """
         Adds a new customer.
@@ -143,6 +240,12 @@ class DatabaseQueries:
     # -------------------------------------------------------------------------
     
     # Purpose: Inserts a new product into the inventory system.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: add_product
+    # Purpose:
+    # Adds a new product to inventory.
+    # ---------------------------------------------
     def add_product(self, name, category, hsn, cost, selling, gst, stock, supplier_id):
         """
         Adds a new product to inventory.
@@ -152,6 +255,12 @@ class DatabaseQueries:
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (name, category, hsn, cost, selling, gst, stock, supplier_id)).lastrowid
 
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: search_products
+    # Purpose:
+    # Searches the product table.
+    # ---------------------------------------------
     def search_products(self, search_term):
         """
         Searches the product table.
@@ -167,6 +276,12 @@ class DatabaseQueries:
     # -------------------------------------------------------------------------
     
     # Purpose: Updates the stock count for a product and logs the adjustment.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: update_stock
+    # Purpose:
+    # Adjusts inventory levels safely.
+    # ---------------------------------------------
     def update_stock(self, product_id, quantity_change, user_id, reason="Invoice Creation"):
         """
         Adjusts inventory levels safely.
@@ -180,6 +295,12 @@ class DatabaseQueries:
             (product_id, quantity_change, reason, user_id)
         )
 
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: create_invoice
+    # Purpose:
+    # Creates a new invoice record.
+    # ---------------------------------------------
     def create_invoice(self, data):
         """
         Creates a new invoice record.
@@ -207,6 +328,12 @@ class DatabaseQueries:
         return cursor.lastrowid
 
     # Purpose: Attaches a sold product item to a specific invoice.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: add_invoice_item
+    # Purpose:
+    # Adds a line item to an existing invoice.
+    # ---------------------------------------------
     def add_invoice_item(self, invoice_id, item):
         """
         Adds a line item to an existing invoice.
@@ -219,6 +346,12 @@ class DatabaseQueries:
             item.get('discount', 0), item['gst_percentage'], item['total']
         ))
 
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: update_invoice_status
+    # Purpose:
+    # Updates the payment status of an invoice.
+    # ---------------------------------------------
     def update_invoice_status(self, invoice_number, new_status):
         """
         Updates the payment status of an invoice.
@@ -227,6 +360,12 @@ class DatabaseQueries:
 
 
     # Purpose: Creates a generic audit log entry.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: log_audit
+    # Purpose:
+    # Records a system action for audit purposes.
+    # ---------------------------------------------
     def log_audit(self, user_id, action, target_type=None, target_id=None, details=None):
         """
         Records a system action for audit purposes.
