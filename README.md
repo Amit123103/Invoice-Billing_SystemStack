@@ -18,6 +18,8 @@ Click below to view the complete project documentation.
 - **Comprehensive Reports:** Generate detailed reports on sales, inventory, and other key metrics to make informed business decisions.
 - **Customizable Settings:** Adapt the application to your business needs through a dedicated settings module.
 
+
+
 ## Technology Stack
 - **Language:** Python
 - **GUI Framework:** CustomTkinter & Tkinter
