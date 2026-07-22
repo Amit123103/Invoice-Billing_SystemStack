@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : schema.py
+#
+# Team Member :
+# Team Member 5
+#
+# Module :
+# Database & Integration
+#
+# Responsibilities :
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+#
+# Developed By :
+# Team Member 5
+############################################################
 """
 File: schema.py
 
@@ -11,6 +32,16 @@ Dependencies:
 Project: Smart ERP Billing System
 """
 
+###########################################################
+# Team Member 5
+# Module: Database & Integration
+# Completed:
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+###########################################################
 from database.connection import DatabaseConnection
 
 # Purpose:
@@ -18,6 +49,12 @@ from database.connection import DatabaseConnection
 # It creates all required tables with proper primary keys, foreign keys, and constraints.
 # Returns:
 # None
+# ---------------------------------------------
+# Team Member 5
+# Function: create_tables
+# Purpose:
+# Initializes the database schema and creates necessary tables if they do not exist.
+# ---------------------------------------------
 def create_tables():
     """
     Initializes the database schema and creates necessary tables if they do not exist.

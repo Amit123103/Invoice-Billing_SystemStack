@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : dashboard.py
+#
+# Team Member :
+# Team Member 1
+#
+# Module :
+# Authentication & Dashboard
+#
+# Responsibilities :
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+#
+# Developed By :
+# Team Member 1
+############################################################
 """
 File: dashboard.py
 
@@ -10,6 +30,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 1
+# Module: Authentication & Dashboard
+# Completed:
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+###########################################################
 import customtkinter as ctk
 from database.queries import DatabaseQueries
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -19,11 +48,23 @@ from datetime import datetime, timedelta
 # This class defines the main Dashboard frame that wraps around all other pages.
 # It solves the problem of navigation by providing a persistent left-side menu and top header.
 # Its responsibility is to act as the master layout and show summary analytics on the home screen.
+# ---------------------------------------------
+# Team Member 1
+# Class: Dashboard
+# Purpose:
+# GUI Frame for the Main Dashboard and persistent Navigation Menu.
+# ---------------------------------------------
 class Dashboard(ctk.CTkFrame):
     """
     GUI Frame for the Main Dashboard and persistent Navigation Menu.
     """
     
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         # Set the entire background to a modern light gray
         super().__init__(parent, fg_color="#F3F4F6")
@@ -140,6 +181,12 @@ class Dashboard(ctk.CTkFrame):
     #
     # Returns:
     # CTkFrame: The fully built card widget ready to be packed/gridded.
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: create_kpi_card
+    # Purpose:
+    # Creates a modern KPI metric card.
+    # ---------------------------------------------
     def create_kpi_card(self, parent, title, variable, badge):
         """
         Creates a modern KPI metric card.
@@ -163,6 +210,12 @@ class Dashboard(ctk.CTkFrame):
         
         return card
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: load_dashboard_data
+    # Purpose:
+    # Handles logic for load dashboard data
+    # ---------------------------------------------
     def load_dashboard_data(self):
         invoices = [dict(row) for row in self.db.get_all("invoices")]
         customers = self.db.get_all("customers")
@@ -179,6 +232,12 @@ class Dashboard(ctk.CTkFrame):
         # Update Chart
         self.update_chart(invoices)
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: update_chart
+    # Purpose:
+    # Handles logic for update chart
+    # ---------------------------------------------
     def update_chart(self, invoices):
         if self.canvas_widget:
             self.canvas_widget.destroy()
@@ -227,6 +286,12 @@ class Dashboard(ctk.CTkFrame):
 
     # Purpose:
     # Swaps the content area back to the home analytics view.
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: show_home
+    # Purpose:
+    # Displays the main dashboard analytics view.
+    # ---------------------------------------------
     def show_home(self):
         """
         Displays the main dashboard analytics view.
@@ -242,6 +307,12 @@ class Dashboard(ctk.CTkFrame):
 
     # Purpose:
     # Clears the active session and returns the user to the login screen.
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: logout
+    # Purpose:
+    # Logs the user out of the application.
+    # ---------------------------------------------
     def logout(self):
         """
         Logs the user out of the application.

@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : gst_service.py
+#
+# Team Member :
+# Team Member 3
+#
+# Module :
+# Customer & Billing
+#
+# Responsibilities :
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+#
+# Developed By :
+# Team Member 3
+############################################################
 """
 File: gst_service.py
 
@@ -13,6 +34,22 @@ Dependencies:
 # It exists because tax laws can be complex and change over time. By keeping the math here,
 # we prevent having to update tax logic in 20 different places if the law changes.
 # Its responsibility is taking an amount and rate, and returning the exact tax split.
+###########################################################
+# Team Member 3
+# Module: Customer & Billing
+# Completed:
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+###########################################################
+# ---------------------------------------------
+# Team Member 3
+# Class: GSTService
+# Purpose:
+# Service class executing tax mathematics.
+# ---------------------------------------------
 class GSTService:
     """
     Service class executing tax mathematics.
@@ -28,6 +65,14 @@ class GSTService:
     #
     # Returns:
     # dict: A dictionary containing the exact tax breakdown.
+    # ---------------------------------------------
+    # Team Member 3
+    # Function: calculate_gst
+    # Purpose:
+    # Calculates GST breakdown from a base amount and percentage.
+    # amount (float): The base pre-tax amount.
+    # gst_percentage (float): The applicable tax rate percentage.
+    # ---------------------------------------------
     @staticmethod
     def calculate_gst(amount, gst_percentage):
         """

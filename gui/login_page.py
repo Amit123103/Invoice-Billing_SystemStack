@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : login_page.py
+#
+# Team Member :
+# Team Member 1
+#
+# Module :
+# Authentication & Dashboard
+#
+# Responsibilities :
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+#
+# Developed By :
+# Team Member 1
+############################################################
 """
 File: login_page.py
 
@@ -12,6 +32,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 1
+# Module: Authentication & Dashboard
+# Completed:
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+###########################################################
 import customtkinter as ctk
 from tkinter import messagebox
 from database.queries import DatabaseQueries
@@ -21,11 +50,23 @@ from utils.auth import verify_password
 # It solves the problem of unauthorized access by forcing a user to authenticate before 
 # seeing the Dashboard or performing any billing operations.
 # Its responsibility is capturing credentials and switching to the main app if valid.
+# ---------------------------------------------
+# Team Member 1
+# Class: LoginPage
+# Purpose:
+# GUI Frame for the Login Screen.
+# ---------------------------------------------
 class LoginPage(ctk.CTkFrame):
     """
     GUI Frame for the Login Screen.
     """
     
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         # Initialize the base CTkFrame with a light gray background color
         super().__init__(parent, fg_color="#F3F4F6")
@@ -66,6 +107,12 @@ class LoginPage(ctk.CTkFrame):
     #
     # Returns:
     # None
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: login
+    # Purpose:
+    # Executes the authentication sequence when the Login button is clicked.
+    # ---------------------------------------------
     def login(self):
         """
         Executes the authentication sequence when the Login button is clicked.

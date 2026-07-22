@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : connection.py
+#
+# Team Member :
+# Team Member 5
+#
+# Module :
+# Database & Integration
+#
+# Responsibilities :
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+#
+# Developed By :
+# Team Member 5
+############################################################
 """
 File: connection.py
 
@@ -13,6 +34,16 @@ project
 
 """
 
+###########################################################
+# Team Member 5
+# Module: Database & Integration
+# Completed:
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+###########################################################
 import sqlite3
 import os
 import threading
@@ -21,6 +52,12 @@ import threading
 # It solves the problem of multiple modules opening separate database connections,
 # which can lead to file locking errors (database is locked) in SQLite.
 # Its responsibility is to provide a unified, safe way to execute queries.
+# ---------------------------------------------
+# Team Member 5
+# Class: DatabaseConnection
+# Purpose:
+# Singleton class for managing SQLite database connections securely.
+# ---------------------------------------------
 class DatabaseConnection:
     """
     Singleton class for managing SQLite database connections securely.
@@ -59,6 +96,12 @@ class DatabaseConnection:
     #
     # Returns:
     # sqlite3.Connection: The configured connection object.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: get_connection
+    # Purpose:
+    # Retrieves a configured SQLite connection.
+    # ---------------------------------------------
     def get_connection(self):
         """
         Retrieves a configured SQLite connection.
@@ -86,6 +129,12 @@ class DatabaseConnection:
     #
     # Returns:
     # sqlite3.Cursor: The cursor after execution, useful for retrieving lastrowid.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: execute
+    # Purpose:
+    # Executes a modifying query and commits the transaction.
+    # ---------------------------------------------
     def execute(self, query, params=()):
         """
         Executes a modifying query and commits the transaction.
@@ -113,6 +162,12 @@ class DatabaseConnection:
     #
     # Returns:
     # list: A list of sqlite3.Row objects representing the results.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: fetchall
+    # Purpose:
+    # Executes a query and returns all resulting rows.
+    # ---------------------------------------------
     def fetchall(self, query, params=()):
         """
         Executes a query and returns all resulting rows.
@@ -137,6 +192,12 @@ class DatabaseConnection:
     #
     # Returns:
     # sqlite3.Row or None: The single matching row, or None if no match found.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: fetchone
+    # Purpose:
+    # Executes a query and returns only the first resulting row.
+    # ---------------------------------------------
     def fetchone(self, query, params=()):
         """
         Executes a query and returns only the first resulting row.

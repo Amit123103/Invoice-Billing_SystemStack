@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : reports_page.py
+#
+# Team Member :
+# Team Member 4
+#
+# Module :
+# Invoice & Reports
+#
+# Responsibilities :
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+#
+# Developed By :
+# Team Member 4
+############################################################
 """
 File: reports_page.py
 
@@ -10,17 +30,38 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 4
+# Module: Invoice & Reports
+# Completed:
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+###########################################################
 import customtkinter as ctk
 from tkinter import ttk, filedialog, messagebox
 import os
 from database.queries import DatabaseQueries
 from services.report_service import ReportService
 
+# ---------------------------------------------
+# Team Member 4
+# Class: ReportsPage
+# Purpose:
+# GUI Frame for Business Reports.
+# ---------------------------------------------
 class ReportsPage(ctk.CTkFrame):
     """
     GUI Frame for Business Reports.
     """
     
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
@@ -92,12 +133,24 @@ class ReportsPage(ctk.CTkFrame):
         self.bind("<Map>", lambda e: self.load_data())
         self.load_data()
         
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: create_summary_card
+    # Purpose:
+    # Handles logic for create summary card
+    # ---------------------------------------------
     def create_summary_card(self, parent, title, variable, col, bg_color, text_color):
         card = ctk.CTkFrame(parent, fg_color=bg_color, corner_radius=12)
         card.grid(row=0, column=col, padx=10, sticky="nsew")
         ctk.CTkLabel(card, text=title, font=ctk.CTkFont(size=14), text_color=text_color).pack(pady=(20, 5))
         ctk.CTkLabel(card, textvariable=variable, font=ctk.CTkFont(size=24, weight="bold"), text_color=text_color).pack(pady=(0, 20))
         
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: load_data
+    # Purpose:
+    # Handles logic for load data
+    # ---------------------------------------------
     def load_data(self):
         # Fetch data
         invoices = [dict(row) for row in self.db.get_all("invoices")]
@@ -152,6 +205,12 @@ class ReportsPage(ctk.CTkFrame):
                 'status': inv.get('status', 'N/A')
             })
 
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: preview_pdf_report
+    # Purpose:
+    # Generates a temporary PDF and opens it for previewing.
+    # ---------------------------------------------
     def preview_pdf_report(self):
         """Generates a temporary PDF and opens it for previewing."""
         if not self.last_invoices_data:
@@ -174,6 +233,12 @@ class ReportsPage(ctk.CTkFrame):
         except Exception as e:
             messagebox.showerror("Error", f"Failed to preview report: {str(e)}")
 
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: generate_pdf_report
+    # Purpose:
+    # Generates and opens the business report PDF
+    # ---------------------------------------------
     def generate_pdf_report(self):
         """Generates and opens the business report PDF"""
         if not self.last_invoices_data:
@@ -201,6 +266,12 @@ class ReportsPage(ctk.CTkFrame):
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to generate report: {str(e)}")
 
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: update_status
+    # Purpose:
+    # Updates the status of the selected invoice in the Treeview.
+    # ---------------------------------------------
     def update_status(self, new_status):
         """Updates the status of the selected invoice in the Treeview."""
         selected_item = self.tree.selection()

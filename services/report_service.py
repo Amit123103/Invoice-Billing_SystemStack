@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : report_service.py
+#
+# Team Member :
+# Team Member 4
+#
+# Module :
+# Invoice & Reports
+#
+# Responsibilities :
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+#
+# Developed By :
+# Team Member 4
+############################################################
 """
 File: report_service.py
 
@@ -11,6 +31,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 4
+# Module: Invoice & Reports
+# Completed:
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+###########################################################
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import os
@@ -18,11 +47,23 @@ import os
 # This class manages PDF exports.
 # It solves the problem of converting application data into printable, professional documents.
 # Its responsibility is drawing text, lines, and images (like logos and QR codes) onto a digital canvas.
+# ---------------------------------------------
+# Team Member 4
+# Class: ReportService
+# Purpose:
+# Service class responsible for generating PDF documents using ReportLab.
+# ---------------------------------------------
 class ReportService:
     """
     Service class responsible for generating PDF documents using ReportLab.
     """
     
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self):
         # Locate the 'reports' folder at the root of the project
         self.reports_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'reports')
@@ -39,6 +80,14 @@ class ReportService:
     #
     # Returns:
     # str: The absolute file path to the finished PDF.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: generate_invoice_pdf
+    # Purpose:
+    # Generates a PDF invoice.
+    # invoice_data (dict): The main invoice header data.
+    # items_data (list): The list of purchased items.
+    # ---------------------------------------------
     def generate_invoice_pdf(self, invoice_data, items_data, qr_path, output_path=None):
         """
         Generates a PDF invoice.
@@ -81,6 +130,12 @@ class ReportService:
         # Return the path so the GUI can notify the user where the file is
         return filename
 
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: generate_business_report_pdf
+    # Purpose:
+    # Generates a comprehensive business report PDF.
+    # ---------------------------------------------
     def generate_business_report_pdf(self, metrics, invoices, output_path=None):
         """
         Generates a comprehensive business report PDF.

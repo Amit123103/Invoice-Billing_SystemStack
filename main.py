@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : main.py
+#
+# Team Member :
+# Team Member 5
+#
+# Module :
+# Database & Integration
+#
+# Responsibilities :
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+#
+# Developed By :
+# Team Member 5
+############################################################
 """
 File: main.py
 
@@ -12,6 +33,16 @@ Dependencies:
 - All the page classes from the gui/ folder.
 """
 
+###########################################################
+# Team Member 5
+# Module: Database & Integration
+# Completed:
+# - SQLite
+# - CRUD Operations
+# - Database Integration
+# - Validation
+# - Testing
+###########################################################
 import customtkinter as ctk
 import tkinter as tk
 
@@ -35,11 +66,23 @@ ctk.set_default_color_theme("blue")
 # This is the master application class that inherits from CTk (the main window).
 # It solves the problem of how to navigate between multiple different screens.
 # Its responsibility is keeping track of who is logged in and showing/hiding pages on demand.
+# ---------------------------------------------
+# Team Member 5
+# Class: SmartERPApp
+# Purpose:
+# The Root Window and Page Controller for the application.
+# ---------------------------------------------
 class SmartERPApp(ctk.CTk):
     """
     The Root Window and Page Controller for the application.
     """
     
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self):
         # Initialize the underlying Tkinter root window
         super().__init__()
@@ -95,6 +138,12 @@ class SmartERPApp(ctk.CTk):
     #
     # Parameters:
     # page_name (str): The exact class name of the page to navigate to.
+    # ---------------------------------------------
+    # Team Member 5
+    # Function: show_frame
+    # Purpose:
+    # Navigates the user to a different screen/page.
+    # ---------------------------------------------
     def show_frame(self, page_name):
         """
         Navigates the user to a different screen/page.

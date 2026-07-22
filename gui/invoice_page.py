@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : invoice_page.py
+#
+# Team Member :
+# Team Member 4
+#
+# Module :
+# Invoice & Reports
+#
+# Responsibilities :
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+#
+# Developed By :
+# Team Member 4
+############################################################
 """
 File: invoice_page.py
 
@@ -17,6 +37,15 @@ Dependencies:
 - datetime (For generating unique invoice numbers based on timestamps)
 """
 
+###########################################################
+# Team Member 4
+# Module: Invoice & Reports
+# Completed:
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+###########################################################
 import customtkinter as ctk
 from tkinter import ttk, messagebox, filedialog
 from database.queries import DatabaseQueries
@@ -30,11 +59,23 @@ import os
 # It solves the problem of cashiers needing to manually calculate taxes and discounts
 # by providing a dynamic, real-time "shopping cart" view.
 # Its responsibility is to aggregate items into a cart, compute final totals, and dispatch to services.
+# ---------------------------------------------
+# Team Member 4
+# Class: InvoicePage
+# Purpose:
+# GUI Frame for the Point of Sale / Invoice generation system.
+# ---------------------------------------------
 class InvoicePage(ctk.CTkFrame):
     """
     GUI Frame for the Point of Sale / Invoice generation system.
     """
     
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
@@ -161,6 +202,12 @@ class InvoicePage(ctk.CTkFrame):
 
     # Purpose:
     # Populates the dropdown menus by querying the latest customers and products.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: load_dropdowns
+    # Purpose:
+    # Fetches database records to populate the UI dropdown menus.
+    # ---------------------------------------------
     def load_dropdowns(self):
         """
         Fetches database records to populate the UI dropdown menus.
@@ -188,6 +235,12 @@ class InvoicePage(ctk.CTkFrame):
     # Purpose:
     # Reads the currently selected product, applies quantity and discount, 
     # calculates item-level taxes, and adds it to the cart matrix.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: add_to_cart
+    # Purpose:
+    # Calculates prices and adds the selected product to the shopping cart.
+    # ---------------------------------------------
     def add_to_cart(self):
         """
         Calculates prices and adds the selected product to the shopping cart.
@@ -259,6 +312,12 @@ class InvoicePage(ctk.CTkFrame):
 
     # Purpose:
     # Recalculates the master Subtotal, Tax, and Grand Total by summing up everything in the cart.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: update_totals
+    # Purpose:
+    # Updates the footer UI labels with recalculated totals from all cart items.
+    # ---------------------------------------------
     def update_totals(self):
         """
         Updates the footer UI labels with recalculated totals from all cart items.
@@ -276,6 +335,12 @@ class InvoicePage(ctk.CTkFrame):
 
     # Purpose:
     # Empties the shopping basket and resets all totals to zero.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: clear_cart
+    # Purpose:
+    # Wipes the cart data and clears the Treeview visually.
+    # ---------------------------------------------
     def clear_cart(self):
         """
         Wipes the cart data and clears the Treeview visually.
@@ -292,6 +357,12 @@ class InvoicePage(ctk.CTkFrame):
 
     # Purpose:
     # Finalizes the checkout. It generates a QR code, saves data to SQLite, prints the PDF, and clears the cart.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: generate_invoice
+    # Purpose:
+    # Finalizes the transaction, writes to the database, and creates the PDF.
+    # ---------------------------------------------
     def generate_invoice(self):
         """
         Finalizes the transaction, writes to the database, and creates the PDF.

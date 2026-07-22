@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : settings_page.py
+#
+# Team Member :
+# Team Member 1
+#
+# Module :
+# Authentication & Dashboard
+#
+# Responsibilities :
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+#
+# Developed By :
+# Team Member 1
+############################################################
 """
 File: settings_page.py
 
@@ -11,16 +31,37 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 1
+# Module: Authentication & Dashboard
+# Completed:
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+###########################################################
 import customtkinter as ctk
 from tkinter import messagebox, filedialog
 from database.queries import DatabaseQueries
 import shutil
 
+# ---------------------------------------------
+# Team Member 1
+# Class: SettingsPage
+# Purpose:
+# GUI Frame for System Settings.
+# ---------------------------------------------
 class SettingsPage(ctk.CTkFrame):
     """
     GUI Frame for System Settings.
     """
     
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
         self.controller = controller
@@ -93,6 +134,12 @@ class SettingsPage(ctk.CTkFrame):
         self.bind("<Map>", lambda e: self.load_settings())
         self.load_settings()
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: create_input
+    # Purpose:
+    # Helper to create consistent input fields.
+    # ---------------------------------------------
     def create_input(self, parent, label, variable, row, col, colspan=1, width=280):
         """Helper to create consistent input fields."""
         frame = ctk.CTkFrame(parent, fg_color="transparent")
@@ -100,12 +147,24 @@ class SettingsPage(ctk.CTkFrame):
         ctk.CTkLabel(frame, text=label, text_color="#4b5563", font=ctk.CTkFont(weight="bold")).pack(anchor="w")
         ctk.CTkEntry(frame, textvariable=variable, width=width, height=35, fg_color="#f9fafb", text_color="#111827", border_color="#d1d5db").pack(anchor="w", pady=(5,0))
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: browse_logo
+    # Purpose:
+    # Opens a file dialog to select a logo image.
+    # ---------------------------------------------
     def browse_logo(self):
         """Opens a file dialog to select a logo image."""
         filename = filedialog.askopenfilename(title="Select Logo", filetypes=[("Image Files", "*.png *.jpg *.jpeg")])
         if filename:
             self.logo_var.set(filename)
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: load_settings
+    # Purpose:
+    # Fetches the company data from the database and updates the UI.
+    # ---------------------------------------------
     def load_settings(self):
         """Fetches the company data from the database and updates the UI."""
         company = self.db.get_company()
@@ -118,6 +177,12 @@ class SettingsPage(ctk.CTkFrame):
             self.address_var.set(company_dict.get('address', ''))
             self.logo_var.set(company_dict.get('logo_path', ''))
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: save_settings
+    # Purpose:
+    # Saves the form data to the database.
+    # ---------------------------------------------
     def save_settings(self):
         """Saves the form data to the database."""
         name = self.name_var.get().strip()
@@ -136,10 +201,22 @@ class SettingsPage(ctk.CTkFrame):
         
         messagebox.showinfo("Success", "Company settings saved successfully!")
 
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: change_theme
+    # Purpose:
+    # Switches between Light and Dark mode.
+    # ---------------------------------------------
     def change_theme(self, choice):
         """Switches between Light and Dark mode."""
         ctk.set_appearance_mode(choice)
         
+    # ---------------------------------------------
+    # Team Member 1
+    # Function: backup_database
+    # Purpose:
+    # Creates a backup copy of the database.
+    # ---------------------------------------------
     def backup_database(self):
         """Creates a backup copy of the database."""
         save_path = filedialog.asksaveasfilename(

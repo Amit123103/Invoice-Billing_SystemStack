@@ -1,3 +1,24 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : customer_page.py
+#
+# Team Member :
+# Team Member 3
+#
+# Module :
+# Customer & Billing
+#
+# Responsibilities :
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+#
+# Developed By :
+# Team Member 3
+############################################################
 """
 File: customer_page.py
 
@@ -12,6 +33,16 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 3
+# Module: Customer & Billing
+# Completed:
+# - Customer CRUD
+# - Billing
+# - Cart
+# - GST
+# - Discount
+###########################################################
 import customtkinter as ctk
 from tkinter import ttk, messagebox
 from database.queries import DatabaseQueries
@@ -20,11 +51,23 @@ from database.queries import DatabaseQueries
 # It solves the problem of needing a user-friendly way for cashiers/managers to input 
 # and view client details without touching raw databases.
 # Its responsibility is capturing customer data via a form and displaying it in a data grid.
+# ---------------------------------------------
+# Team Member 3
+# Class: CustomerPage
+# Purpose:
+# GUI Frame for managing Customers.
+# ---------------------------------------------
 class CustomerPage(ctk.CTkFrame):
     """
     GUI Frame for managing Customers.
     """
     
+    # ---------------------------------------------
+    # Team Member 3
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self, parent, controller):
         # Set background to transparent so it inherits the Dashboard's gray background
         super().__init__(parent, fg_color="transparent")
@@ -111,6 +154,12 @@ class CustomerPage(ctk.CTkFrame):
 
     # Purpose:
     # Validates input and saves a new customer to the database when the Add button is clicked.
+    # ---------------------------------------------
+    # Team Member 3
+    # Function: add_customer
+    # Purpose:
+    # Event handler for adding a new customer.
+    # ---------------------------------------------
     def add_customer(self):
         """
         Event handler for adding a new customer.
@@ -143,6 +192,12 @@ class CustomerPage(ctk.CTkFrame):
         
     # Purpose:
     # Pulls all customer records from the database and populates the Treeview table.
+    # ---------------------------------------------
+    # Team Member 3
+    # Function: load_customers
+    # Purpose:
+    # Refreshes the customer data grid.
+    # ---------------------------------------------
     def load_customers(self, search_query=""):
         """
         Refreshes the customer data grid.

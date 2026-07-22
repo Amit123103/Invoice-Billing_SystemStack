@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : invoice.py
+#
+# Team Member :
+# Team Member 4
+#
+# Module :
+# Invoice & Reports
+#
+# Responsibilities :
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+#
+# Developed By :
+# Team Member 4
+############################################################
 """
 File: invoice.py
 
@@ -10,6 +30,15 @@ Dependencies:
 - typing
 """
 
+###########################################################
+# Team Member 4
+# Module: Invoice & Reports
+# Completed:
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+###########################################################
 from dataclasses import dataclass, field
 from typing import List
 
@@ -17,6 +46,12 @@ from typing import List
 # It exists because an invoice is composed of multiple products, each with its own
 # specific quantity, discount, and calculated tax at the time of sale.
 # It ensures item-level tax calculations remain tied to the specific transaction.
+# ---------------------------------------------
+# Team Member 4
+# Class: InvoiceItem
+# Purpose:
+# Represents a single purchased item row on an invoice.
+# ---------------------------------------------
 @dataclass
 class InvoiceItem:
     """
@@ -43,6 +78,12 @@ class InvoiceItem:
 # This class represents a complete financial billing transaction.
 # It solves the problem of aggregating all sub-totals, taxes, and items into one coherent object.
 # Its responsibility is to represent the finalized state of a bill for storage, PDF printing, or QR generation.
+# ---------------------------------------------
+# Team Member 4
+# Class: Invoice
+# Purpose:
+# Represents a full Invoice containing customer details, totals, and a list of purchased items.
+# ---------------------------------------------
 @dataclass
 class Invoice:
     """

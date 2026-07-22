@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : auth.py
+#
+# Team Member :
+# Team Member 1
+#
+# Module :
+# Authentication & Dashboard
+#
+# Responsibilities :
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+#
+# Developed By :
+# Team Member 1
+############################################################
 """
 File: auth.py
 
@@ -10,6 +30,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 1
+# Module: Authentication & Dashboard
+# Completed:
+# - Login Authentication
+# - Dashboard
+# - User Management
+# - Settings
+###########################################################
 import hashlib
 
 # Purpose:
@@ -20,6 +49,14 @@ import hashlib
 #
 # Returns:
 # str: The 64-character hexadecimal SHA-256 hash.
+# ---------------------------------------------
+# Team Member 1
+# Function: hash_password
+# Purpose:
+# Generates a secure SHA-256 hash of the provided password.
+# password (str):
+# The raw string password to hash.
+# ---------------------------------------------
 def hash_password(password: str) -> str:
     """
     Generates a secure SHA-256 hash of the provided password.
@@ -45,6 +82,14 @@ def hash_password(password: str) -> str:
 #
 # Returns:
 # bool: True if the passwords match, False otherwise.
+# ---------------------------------------------
+# Team Member 1
+# Function: verify_password
+# Purpose:
+# Verifies a password against a known hash.
+# password (str):
+# The password attempt.
+# ---------------------------------------------
 def verify_password(password: str, hashed: str) -> bool:
     """
     Verifies a password against a known hash.

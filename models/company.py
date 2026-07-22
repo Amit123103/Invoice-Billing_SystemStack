@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : company.py
+#
+# Team Member :
+# Team Member 4
+#
+# Module :
+# Invoice & Reports
+#
+# Responsibilities :
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+#
+# Developed By :
+# Team Member 4
+############################################################
 """
 File: company.py
 
@@ -10,12 +30,27 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 4
+# Module: Invoice & Reports
+# Completed:
+# - Invoice Generation
+# - Reports
+# - Analytics
+# - PDF Export
+###########################################################
 from dataclasses import dataclass
 
 # This class represents a single Company configuration in the system.
 # It solves the problem of passing around loosely typed company dictionaries
 # by providing a strict object-oriented structure with type hints.
 # Responsibilities include holding company details securely for use in reports and invoices.
+# ---------------------------------------------
+# Team Member 4
+# Class: Company
+# Purpose:
+# Data container for a Company record.
+# ---------------------------------------------
 @dataclass
 class Company:
     """

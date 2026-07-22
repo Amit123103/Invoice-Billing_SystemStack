@@ -1,3 +1,23 @@
+############################################################
+# Project : Smart ERP Billing System
+#
+# File    : qr_service.py
+#
+# Team Member :
+# Team Member 2
+#
+# Module :
+# Inventory Management
+#
+# Responsibilities :
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+#
+# Developed By :
+# Team Member 2
+############################################################
 """
 File: qr_service.py
 
@@ -12,6 +32,15 @@ Dependencies:
 
 """
 
+###########################################################
+# Team Member 2
+# Module: Inventory Management
+# Completed:
+# - Product CRUD
+# - Inventory
+# - Categories
+# - Supplier Management
+###########################################################
 import qrcode
 import hashlib
 import os
@@ -19,11 +48,23 @@ import os
 # This class isolates all QR code generation logic.
 # It exists because generating graphics is an independent, specialized task.
 # Its responsibility is taking invoice metadata, signing it securely, and producing an image file.
+# ---------------------------------------------
+# Team Member 2
+# Class: QRService
+# Purpose:
+# Service class responsible for generating cryptographic QR code images.
+# ---------------------------------------------
 class QRService:
     """
     Service class responsible for generating cryptographic QR code images.
     """
     
+    # ---------------------------------------------
+    # Team Member 2
+    # Function: __init__
+    # Purpose:
+    # Handles logic for   init  
+    # ---------------------------------------------
     def __init__(self):
         # Determine where to save the images (the 'qrcodes' folder in the project root)
         self.qr_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'qrcodes')
@@ -41,6 +82,14 @@ class QRService:
     #
     # Returns:
     # tuple(str, str): A tuple containing the (FilePath to the image, The generated Hash string).
+    # ---------------------------------------------
+    # Team Member 2
+    # Function: generate_qr
+    # Purpose:
+    # Generates a QR code image for an invoice and signs it with SHA-256.
+    # invoice_number (str): Invoice ID.
+    # customer_name (str): Customer name.
+    # ---------------------------------------------
     def generate_qr(self, invoice_number, customer_name, amount):
         """
         Generates a QR code image for an invoice and signs it with SHA-256.
