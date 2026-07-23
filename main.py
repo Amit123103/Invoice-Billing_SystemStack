@@ -43,6 +43,7 @@ Dependencies:
 # - Validation
 # - Testing
 ###########################################################
+from database.schema import create_tables
 import customtkinter as ctk
 import tkinter as tk
 
@@ -194,6 +195,7 @@ class SmartERPApp(ctk.CTk):
 # Python idiom: This block only runs if you type `python main.py` in the console.
 if __name__ == "__main__":
     # Create the application window object
+    create_tables()
     app = SmartERPApp()
     
     # Start the infinite GUI event loop that listens for mouse clicks and keyboard typing.
