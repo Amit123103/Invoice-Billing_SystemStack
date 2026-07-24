@@ -55,6 +55,7 @@ from gui.invoice_page import InvoicePage
 from gui.reports_page import ReportsPage
 from gui.settings_page import SettingsPage
 
+
 # -------------------------------------------------------------------
 # Global Application Styling
 # -------------------------------------------------------------------

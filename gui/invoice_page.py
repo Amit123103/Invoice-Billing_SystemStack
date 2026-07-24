@@ -3,7 +3,7 @@
 #
 # File    : invoice_page.py
 #
-# Team Member :
+# Team Member :Bhipender
 # Team Member 4
 #
 # Module :
@@ -114,13 +114,48 @@ class InvoicePage(ctk.CTkFrame):
         row1.pack(fill="x", padx=20, pady=20)
         
         # Dropdown to select the customer being billed
+        customer_frame = ctk.CTkFrame(row1, fg_color="transparent")
+        customer_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+            customer_frame,
+    text="Customer",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
         self.customer_var = ctk.StringVar()
-        self.customer_dropdown = ctk.CTkOptionMenu(row1, variable=self.customer_var, values=[], width=300, fg_color="#f9fafb", text_color="#111827")
-        self.customer_dropdown.pack(side="left", padx=10)
+
+        self.customer_dropdown = ctk.CTkOptionMenu(
+    customer_frame,
+    variable=self.customer_var,
+    values=[],
+    width=250,
+    fg_color="#f9fafb",
+    text_color="#111827"
+)
+        self.customer_dropdown.pack()
         
         # Dropdown to select how the customer is paying
+        payment_frame = ctk.CTkFrame(row1, fg_color="transparent")
+        payment_frame.pack(side="left", padx=30)
+
+        ctk.CTkLabel(
+    payment_frame,
+    text="Payment Method",
+    font=ctk.CTkFont(size=13, weight="bold")
+    ).pack(anchor="w")
+
         self.payment_var = ctk.StringVar(value="Cash")
-        ctk.CTkOptionMenu(row1, variable=self.payment_var, values=["Cash", "Card", "UPI", "Bank Transfer"], width=200, fg_color="#f9fafb", text_color="#111827").pack(side="left", padx=10)
+
+        self.payment_dropdown = ctk.CTkOptionMenu(
+    payment_frame,
+    variable=self.payment_var,
+    values=["Cash", "Card", "UPI", "Bank Transfer"],
+    width=200,
+    fg_color="#f9fafb",
+    text_color="#111827"
+)
+        self.payment_dropdown.pack()
         
         # ---------------------------------------------------------
         # Product Selection Card (Adding to Cart)
@@ -132,20 +167,71 @@ class InvoicePage(ctk.CTkFrame):
         row2.pack(fill="x", padx=20, pady=20)
         
         # Dropdown to select which product to add to the cart
+        product_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        product_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+            product_frame,
+            text="Product",
+            font=ctk.CTkFont(size=13, weight="bold")
+        ).pack(anchor="w")
+
         self.product_var = ctk.StringVar()
-        self.product_dropdown = ctk.CTkOptionMenu(row2, variable=self.product_var, values=[], width=300, fg_color="#f9fafb", text_color="#111827")
-        self.product_dropdown.pack(side="left", padx=10)
+
+        self.product_dropdown = ctk.CTkOptionMenu(
+    product_frame,
+    variable=self.product_var,
+    values=[],
+    width=250,
+    fg_color="#f9fafb",
+    text_color="#111827"
+)
+        self.product_dropdown.pack()
         
         # Quantity input field
+        qty_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        qty_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+    qty_frame,
+    text="Quantity",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
         self.qty_var = ctk.StringVar(value="1")
-        ctk.CTkEntry(row2, textvariable=self.qty_var, placeholder_text="Qty", width=80).pack(side="left", padx=10)
+
+        ctk.CTkEntry(
+    qty_frame,
+    textvariable=self.qty_var,
+    width=80
+).pack()
         
         # Discount percentage input field (applied per item)
+        discount_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        discount_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+    discount_frame,
+    text="Discount %",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
         self.discount_var = ctk.StringVar(value="0")
-        ctk.CTkEntry(row2, textvariable=self.discount_var, placeholder_text="Discount %", width=100).pack(side="left", padx=10)
+
+        ctk.CTkEntry(
+    discount_frame,
+    textvariable=self.discount_var,
+    width=100
+).pack()
+
         
         # Button to process the selection and push it into the cart
-        ctk.CTkButton(row2, text="Add to Cart", command=self.add_to_cart, fg_color="#2563eb").pack(side="left", padx=20)
+        ctk.CTkButton(
+    row2,
+    text="Add to Cart",
+    command=self.add_to_cart,
+    fg_color="#2563eb"
+).pack(side="left", padx=30, pady=(20, 0))
         
         # ---------------------------------------------------------
         # Shopping Cart Data Grid (Treeview)
@@ -445,8 +531,3 @@ class InvoicePage(ctk.CTkFrame):
         except Exception as e:
             # If the database fails (e.g. locked file), show the error so the app doesn't crash silently
             messagebox.showerror("Error", str(e))
-
-
-
-
-
