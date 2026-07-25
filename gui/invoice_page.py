@@ -48,6 +48,8 @@ Dependencies:
 ###########################################################
 import customtkinter as ctk
 from tkinter import ttk, messagebox, filedialog
+
+from matplotlib import style
 from database.queries import DatabaseQueries
 from services.billing_service import BillingService
 from services.qr_service import QRService
@@ -233,6 +235,15 @@ class InvoicePage(ctk.CTkFrame):
     fg_color="#2563eb"
 ).pack(side="left", padx=30, pady=(20, 0))
         
+        # Button to remove the currently selected item from the cart
+        ctk.CTkButton(
+    row2,
+    text="Remove Selected item",
+    command=self.remove_selected_item,
+    fg_color="#dc2626",
+    hover_color="#b91c1c"
+).pack(side="left", padx=20, pady=(20, 0))
+        
         # ---------------------------------------------------------
         # Shopping Cart Data Grid (Treeview)
         # ---------------------------------------------------------
@@ -241,13 +252,38 @@ class InvoicePage(ctk.CTkFrame):
         
         cols = ("ID", "Name", "Qty", "Price", "Discount", "GST %", "Total")
         style = ttk.Style()
-        style.configure("Treeview", background="#FFFFFF", foreground="#111827", rowheight=40, borderwidth=0)
-        
-        self.cart_tree = ttk.Treeview(table_card, columns=cols, show="headings", style="Treeview", height=6)
+
+        style.theme_use("default")   # Important
+
+        style.configure(
+    "Treeview",
+    background="white",
+    foreground="black",
+    fieldbackground="white",
+    rowheight=35
+)
+
+        style.configure(
+    "Treeview.Heading",
+    font=("Arial", 11, "bold")
+)
+
+        style.map(
+    "Treeview",
+    background=[("selected", "#BBDEFF")],
+    foreground=[("selected", "black")]
+)
+
+        self.cart_tree = ttk.Treeview(
+    table_card,
+    columns=cols,
+    show="headings",
+    selectmode="browse"
+)
         for c in cols:
-            self.cart_tree.heading(c, text=c)
-            self.cart_tree.column(c, width=100)
-            
+         self.cart_tree.heading(c, text=c)
+         self.cart_tree.column(c, width=120, anchor="center")
+
         self.cart_tree.pack(fill="both", expand=True, padx=20, pady=20)
         
         # ---------------------------------------------------------
@@ -440,6 +476,47 @@ class InvoicePage(ctk.CTkFrame):
             
         # Re-trigger total math (which will now sum up to zero)
         self.update_totals()
+
+
+    #Purpose:
+    # Removes the currently selected item from the cart and updates totals.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: remove_selected_item
+    # Purpose:
+    # Removes the selected product from the cart and updates the UI and totals.
+    # ---------------------------------------------
+
+    def remove_selected_item(self):
+        """Removes the selected row from the shopping cart."""
+
+    # Get selected row
+        selected_item = self.cart_tree.selection()
+
+        if not selected_item:
+         messagebox.showwarning(
+            "No Selection",
+            "Please select a product to remove."
+        )
+         return
+
+    # Get Treeview item ID
+        item = selected_item[0]
+
+    # Get index of selected row
+        row_index = self.cart_tree.index(item)
+
+    # Remove from cart_items list
+        if 0 <= row_index < len(self.cart_items):
+            self.cart_items.pop(row_index)
+
+    # Remove from Treeview
+        self.cart_tree.delete(item)
+
+    # Update totals
+        self.update_totals()
+    
+    
 
     # Purpose:
     # Finalizes the checkout. It generates a QR code, saves data to SQLite, prints the PDF, and clears the cart.
