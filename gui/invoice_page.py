@@ -333,23 +333,45 @@ class InvoicePage(ctk.CTkFrame):
         row3.pack(fill="x", padx=20, pady=20)
         
         # Subtotal display (Price before tax)
-        self.lbl_subtotal = ctk.CTkLabel(row3, text="Subtotal: ₹0.00", font=ctk.CTkFont(size=14), text_color="#6b7280")
+        self.lbl_subtotal = ctk.CTkLabel(row3, text="Subtotal: ₹0.00", font=ctk.CTkFont(size=12), text_color="#6b7280")
         self.lbl_subtotal.pack(side="left", padx=20)
         
         # Total Tax display
-        self.lbl_tax = ctk.CTkLabel(row3, text="Total Tax: ₹0.00", font=ctk.CTkFont(size=14), text_color="#6b7280")
+        self.lbl_tax = ctk.CTkLabel(row3, text="Total Tax: ₹0.00", font=ctk.CTkFont(size=12), text_color="#6b7280")
         self.lbl_tax.pack(side="left", padx=20)
         
         # Final Grand Total display
-        self.lbl_total = ctk.CTkLabel(row3, text="Final Amount: ₹0.00", font=ctk.CTkFont(size=20, weight="bold"), text_color="#10b981")
+        self.lbl_total = ctk.CTkLabel(row3, text="Final Amount: ₹0.00", font=ctk.CTkFont(size=18, weight="bold"), text_color="#10b981")
         self.lbl_total.pack(side="left", padx=20)
         
         # Amount Paid Input
         paid_frame = ctk.CTkFrame(row3, fg_color="transparent")
         paid_frame.pack(side="left", padx=20)
-        ctk.CTkLabel(paid_frame, text="Amount Paid: ₹", font=ctk.CTkFont(size=14), text_color="#6b7280").pack(side="left")
+        ctk.CTkLabel(paid_frame, text="Amount Paid: ₹", font=ctk.CTkFont(size=12), text_color="#6b7280").pack(side="left")
         self.amount_paid_var = ctk.StringVar(value="0")
+        # Update paid and due amounts whenever the value changes
+        self.amount_paid_var.trace_add(
+            "write",
+            self.update_payment_status
+        )
         ctk.CTkEntry(paid_frame, textvariable=self.amount_paid_var, width=80).pack(side="left", padx=5)
+        # Paid Amount Display
+        self.lbl_paid = ctk.CTkLabel(
+            row3,
+            text="Paid: ₹0.00",
+            font=ctk.CTkFont(size=12),
+            text_color="#16a34a"
+        )
+        self.lbl_paid.pack(side="left", padx=20)
+
+        # Due Amount Display
+        self.lbl_due = ctk.CTkLabel(
+            row3,
+            text="Due: ₹0.00",
+            font=ctk.CTkFont(size=12, weight="bold"),
+            text_color="#dc2626"
+        )
+        self.lbl_due.pack(side="left", padx=20)
         
         # Button to finalize the transaction
         ctk.CTkButton(row3, text="Generate Invoice", command=self.generate_invoice, fg_color="#10b981", hover_color="#059669", font=ctk.CTkFont(weight="bold")).pack(side="right", padx=10)
@@ -580,6 +602,44 @@ class InvoicePage(ctk.CTkFrame):
         self.lbl_tax.configure(text=f"Total Tax: ₹{self.total_tax:.2f}")
         self.lbl_total.configure(text=f"Final Amount: ₹{self.final_amount:.2f}")
         self.amount_paid_var.set(f"{self.final_amount:.2f}")
+        self.update_payment_status()
+
+
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: update_payment_status
+    # Purpose:
+    # Calculates the paid amount, due amount,
+    # or change amount whenever the user enters
+    # a payment value.
+    # ---------------------------------------------
+    def update_payment_status(self, *args):
+        """
+        Updates the Paid and Due labels dynamically.
+        """
+
+        try:
+            amount_paid = float(self.amount_paid_var.get())
+        except ValueError:
+            amount_paid = 0.0
+
+        # Update Paid label
+        self.lbl_paid.configure(text=f"Paid: ₹{amount_paid:.2f}")
+
+        difference = amount_paid - self.final_amount
+
+        if difference >= 0:
+            # Customer has paid enough
+            self.lbl_due.configure(
+                text=f"Change: ₹{difference:.2f}",
+                text_color="#16a34a"
+            )
+        else:
+            # Customer still owes money
+            self.lbl_due.configure(
+                text=f"Due: ₹{-difference:.2f}",
+                text_color="#dc2626"
+            )
 
     # Purpose:
     # Empties the shopping basket and resets all totals to zero.
