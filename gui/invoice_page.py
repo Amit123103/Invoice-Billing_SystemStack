@@ -125,7 +125,22 @@ class InvoicePage(ctk.CTkFrame):
     font=ctk.CTkFont(size=13, weight="bold")
 ).pack(anchor="w")
 
+        self.customer_search_var = ctk.StringVar()
+
         self.customer_var = ctk.StringVar()
+
+        customer_search = ctk.CTkEntry(
+            customer_frame,
+            textvariable=self.customer_search_var,
+            placeholder_text="🔍 Search Customer...",
+            width=250
+        )
+        customer_search.pack(pady=(0, 5))
+        # Filter customers while typing
+        self.customer_search_var.trace_add(
+            "write",
+            self.filter_customers
+        )
 
         self.customer_dropdown = ctk.CTkOptionMenu(
     customer_frame,
@@ -178,16 +193,31 @@ class InvoicePage(ctk.CTkFrame):
             font=ctk.CTkFont(size=13, weight="bold")
         ).pack(anchor="w")
 
+        # Search Box
+        self.search_var = ctk.StringVar()
+
+        search_entry = ctk.CTkEntry(
+            product_frame,
+            textvariable=self.search_var,
+            placeholder_text="🔍 Search Product...",
+            width=250
+        )
+        search_entry.pack(pady=(0,5))
+
+        # Update dropdown while typing
+        self.search_var.trace_add("write", self.filter_products)
+
+        # Product Dropdown
         self.product_var = ctk.StringVar()
 
         self.product_dropdown = ctk.CTkOptionMenu(
-    product_frame,
-    variable=self.product_var,
-    values=[],
-    width=250,
-    fg_color="#f9fafb",
-    text_color="#111827"
-)
+            product_frame,
+            variable=self.product_var,
+            values=[],
+            width=250,
+            fg_color="#f9fafb",
+            text_color="#111827"
+        )
         self.product_dropdown.pack()
         
         # Quantity input field
@@ -232,17 +262,23 @@ class InvoicePage(ctk.CTkFrame):
     row2,
     text="Add to Cart",
     command=self.add_to_cart,
+    width=130,
+    height=40,
     fg_color="#2563eb"
-).pack(side="left", padx=30, pady=(20, 0))
-        
+).pack(side="left", padx=8, pady=(20, 0))
+
+
+
         # Button to remove the currently selected item from the cart
         ctk.CTkButton(
     row2,
     text="Remove Selected item",
     command=self.remove_selected_item,
+    width=130,
+    height=40,
     fg_color="#dc2626",
     hover_color="#b91c1c"
-).pack(side="left", padx=20, pady=(20, 0))
+).pack(side="left", padx=8, pady=(20, 0))
         
         # ---------------------------------------------------------
         # Shopping Cart Data Grid (Treeview)
@@ -285,6 +321,7 @@ class InvoicePage(ctk.CTkFrame):
          self.cart_tree.column(c, width=120, anchor="center")
 
         self.cart_tree.pack(fill="both", expand=True, padx=20, pady=20)
+        self.cart_tree.bind("<<TreeviewSelect>>", self.on_cart_select)
         
         # ---------------------------------------------------------
         # Footer / Totals Card
@@ -338,6 +375,9 @@ class InvoicePage(ctk.CTkFrame):
             # Query all customers and products
             customers = self.db.get_all("customers")
             products = self.db.get_all("products")
+            # Store complete customer and product lists for searching
+            self.all_customers = customers
+            self.all_products = products
             
             # Format the data into lists of strings like "1 - John Doe" so the user can see both ID and Name
             c_vals = [f"{c['id']} - {c['name']}" for c in customers]
@@ -353,6 +393,92 @@ class InvoicePage(ctk.CTkFrame):
         except Exception:
             # If the database is missing or empty, ignore it gracefully
             pass
+
+# ---------------------------------------------
+# Team Member 4
+# Function: filter_products
+# Purpose:
+# Dynamically filters the product dropdown based on
+# the text entered in the search box.
+# ---------------------------------------------
+
+    def filter_products(self, *args):
+        """Filters products as the user types."""
+
+        search = self.search_var.get().lower().strip()
+
+        filtered = []
+
+        for product in self.all_products:
+
+            product_text = f"{product['id']} - {product['name']}"
+
+            if (
+                search in product['name'].lower()
+                or search in str(product['id'])
+            ):
+                filtered.append(product_text)
+
+        if filtered:
+            self.product_dropdown.configure(values=filtered)
+
+            current = self.product_var.get()
+
+            if current not in filtered:
+                self.product_var.set(filtered[0])
+
+        else:
+            self.product_dropdown.configure(values=["No Product Found"])
+            self.product_var.set("No Product Found")
+
+
+# ---------------------------------------------
+# Team Member 4
+# Function: filter_customers
+# Purpose:
+# Dynamically filters the customer dropdown
+# based on the text entered in the search box.
+# ---------------------------------------------
+    def filter_customers(self, *args):
+        """
+        Dynamically filters the customer dropdown
+        according to the user's search input.
+        """
+
+        # Get the search text entered by the user
+        search = self.customer_search_var.get().lower().strip()
+
+        # Store matching customers
+        filtered = []
+
+        # Loop through all customers
+        for customer in self.all_customers:
+
+            customer_text = f"{customer['id']} - {customer['name']}"
+
+            # Search by Customer ID or Customer Name
+            if (
+                search in customer["name"].lower()
+                or search in str(customer["id"])
+            ):
+                filtered.append(customer_text)
+
+        # Update the dropdown
+        if filtered:
+
+            self.customer_dropdown.configure(values=filtered)
+
+            current = self.customer_var.get()
+
+            if current not in filtered:
+                self.customer_var.set(filtered[0])
+
+        else:
+
+            self.customer_dropdown.configure(values=["No Customer Found"])
+            self.customer_var.set("No Customer Found")
+
+
 
     # Purpose:
     # Reads the currently selected product, applies quantity and discount, 
@@ -469,6 +595,7 @@ class InvoicePage(ctk.CTkFrame):
         """
         # Empty internal memory array
         self.cart_items = []
+        self.selected_cart_index = None
         
         # Empty visual rows
         for row in self.cart_tree.get_children():
@@ -515,7 +642,53 @@ class InvoicePage(ctk.CTkFrame):
 
     # Update totals
         self.update_totals()
-    
+        # Purpose:
+# Detects when the user selects a product from the shopping cart.
+# It loads the selected item's details into the Product, Quantity,
+# and Discount fields so the item can be edited.
+# ---------------------------------------------
+# Team Member 4
+# Function: on_cart_select
+# Purpose:
+# Handles Treeview row selection and populates the input fields
+# with the selected cart item's information for updating.
+# ---------------------------------------------
+
+    def on_cart_select(self, event):
+
+        selected = self.cart_tree.selection()
+
+        if not selected:
+            return
+
+        item = selected[0]
+
+        self.selected_cart_index = self.cart_tree.index(item)
+
+        values = self.cart_tree.item(item)["values"]
+
+        product_id = values[0]
+        quantity = values[2]
+
+        # Set quantity
+        self.qty_var.set(str(quantity))
+
+    # Set discount
+        discount = self.cart_items[self.selected_cart_index]["discount"]
+        price = self.cart_items[self.selected_cart_index]["price"]
+
+        if price > 0:
+            discount_percent = (discount / (price * quantity)) * 100
+        else:
+                discount_percent = 0
+
+        self.discount_var.set(f"{discount_percent:.0f}")
+
+    # Select product in dropdown
+        for value in self.product_dropdown.cget("values"):
+         if value.startswith(f"{product_id} -"):
+            self.product_var.set(value)
+            break
     
 
     # Purpose:
