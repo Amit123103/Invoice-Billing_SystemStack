@@ -80,6 +80,11 @@ class InvoicePage(ctk.CTkFrame):
     # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
+        self.scroll_frame = ctk.CTkScrollableFrame(
+            self,
+            fg_color="transparent"
+        )
+        self.scroll_frame.pack(fill="both", expand=True)
         self.controller = controller
         
         # Instantiate necessary backend services
@@ -102,14 +107,14 @@ class InvoicePage(ctk.CTkFrame):
         # ---------------------------------------------------------
         # Header Area
         # ---------------------------------------------------------
-        header = ctk.CTkFrame(self, fg_color="transparent")
+        header = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
         header.pack(fill="x", padx=30, pady=(20, 10))
         ctk.CTkLabel(header, text="Create Invoice", font=ctk.CTkFont(size=24, weight="bold"), text_color="#111827").pack(side="left")
         
         # ---------------------------------------------------------
         # Settings Card (Customer & Payment Selection)
         # ---------------------------------------------------------
-        settings_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        settings_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         settings_card.pack(fill="x", padx=30, pady=5)
         
         row1 = ctk.CTkFrame(settings_card, fg_color="transparent")
@@ -177,7 +182,7 @@ class InvoicePage(ctk.CTkFrame):
         # ---------------------------------------------------------
         # Product Selection Card (Adding to Cart)
         # ---------------------------------------------------------
-        prod_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        prod_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         prod_card.pack(fill="x", padx=30, pady=10)
         
         row2 = ctk.CTkFrame(prod_card, fg_color="transparent")
@@ -283,10 +288,10 @@ class InvoicePage(ctk.CTkFrame):
         # ---------------------------------------------------------
         # Shopping Cart Data Grid (Treeview)
         # ---------------------------------------------------------
-        table_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        table_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         table_card.pack(fill="both", expand=True, padx=30, pady=5)
         
-        cols = ("ID", "Name", "Qty", "Price", "Discount", "GST %", "Total")
+        cols = ("S.no", "Name", "Qty", "Price", "Discount", "GST %", "Total")
         style = ttk.Style()
 
         style.theme_use("default")   # Important
@@ -310,23 +315,42 @@ class InvoicePage(ctk.CTkFrame):
     foreground=[("selected", "black")]
 )
 
-        self.cart_tree = ttk.Treeview(
-    table_card,
-    columns=cols,
-    show="headings",
-    selectmode="browse"
-)
-        for c in cols:
-         self.cart_tree.heading(c, text=c)
-         self.cart_tree.column(c, width=120, anchor="center")
+        # Create a frame inside the table card
+        tree_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        tree_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        self.cart_tree.pack(fill="both", expand=True, padx=20, pady=20)
+        # Vertical Scrollbar
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical")
+
+        # Treeview
+        self.cart_tree = ttk.Treeview(
+            tree_frame,
+            columns=cols,
+            show="headings",
+            selectmode="browse",
+            yscrollcommand=scrollbar.set
+        )
+        # Configure column headings
+        for col in cols:
+            self.cart_tree.heading(col, text=col)
+        self.cart_tree.column("S.no", width=70, anchor="center")
+        self.cart_tree.column("Name", width=250, anchor="w")
+        self.cart_tree.column("Qty", width=70, anchor="center")
+        self.cart_tree.column("Price", width=100, anchor="center")
+        self.cart_tree.column("Discount", width=100, anchor="center")
+        self.cart_tree.column("GST %", width=80, anchor="center")
+        self.cart_tree.column("Total", width=100, anchor="center")
+
+        scrollbar.config(command=self.cart_tree.yview)
+
+        self.cart_tree.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
         self.cart_tree.bind("<<TreeviewSelect>>", self.on_cart_select)
         
         # ---------------------------------------------------------
         # Footer / Totals Card
         # ---------------------------------------------------------
-        totals_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        totals_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         totals_card.pack(fill="x", padx=30, pady=10)
         
         row3 = ctk.CTkFrame(totals_card, fg_color="transparent")
@@ -568,10 +592,16 @@ class InvoicePage(ctk.CTkFrame):
             self.cart_items.append(item_data)
             
             # Visually append a new row to the Treeview so the cashier sees it
+            serial_no = len(self.cart_tree.get_children()) + 1
+
             self.cart_tree.insert("", "end", values=(
-                item_data['product_id'], item_data['name'], item_data['quantity'], 
-                f"₹{item_data['price']:.2f}", f"₹{item_data['discount']:.2f}", 
-                f"{item_data['gst_percentage']}%", f"₹{item_data['total']:.2f}"
+                serial_no,
+                item_data['name'],
+                item_data['quantity'],
+                f"₹{item_data['price']:.2f}",
+                f"₹{item_data['discount']:.2f}",
+                f"{item_data['gst_percentage']}%",
+                f"₹{item_data['total']:.2f}"
             ))
             
             # Recalculate the master totals at the bottom of the screen

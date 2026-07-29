@@ -112,6 +112,20 @@ class ReportsPage(ctk.CTkFrame):
         table_card.pack(fill="both", expand=True, padx=30, pady=10)
         
         ctk.CTkLabel(table_card, text="Recent Transactions", font=ctk.CTkFont(size=16, weight="bold"), text_color="#111827").pack(anchor="w", padx=20, pady=(20, 0))
+
+        search_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        search_frame.pack(fill="x", padx=20, pady=(10,5))
+
+        self.search_var = ctk.StringVar()
+
+        search_entry = ctk.CTkEntry(
+            search_frame,
+            width=300,
+            placeholder_text="Search Invoice or Customer...",
+            textvariable=self.search_var
+        )
+
+        search_entry.pack(side="right")
         
         columns = ("Date", "Invoice #", "Customer", "Amount", "Status")
         
