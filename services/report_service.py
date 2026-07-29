@@ -121,15 +121,86 @@ class ReportService:
 
         c.setFont("Helvetica", 12)
         c.drawString(100, 770, f"Invoice No : {invoice_data['invoice_number']}")
-        c.drawString(100, 750, f"Total Amount : ₹{total_amount:.2f}")
-        c.drawString(100, 730, f"Amount Paid : ₹{amount_paid:.2f}")
-        c.drawString(100, 710, f"Due Amount : ₹{due_amount:.2f}")
+        c.drawString(100, 750, f"Total Amount : Rs {total_amount:.2f}")
+        c.drawString(100, 730, f"Amount Paid : Rs {amount_paid:.2f}")
+        c.drawString(100, 710, f"Due Amount : Rs {due_amount:.2f}")
         c.drawString(100, 690, f"Payment Status : {status}")
         
         # Check if a QR code image was successfully created and exists on the hard drive
         if qr_path and os.path.exists(qr_path):
             # Embed the QR image into the PDF on the right side (X=400)
             c.drawImage(qr_path, 400, 700, width=100, height=100)
+
+            # ---------- Product Table ----------
+
+            y = 620
+
+            c.setFont("Helvetica-Bold", 12)
+
+            c.drawString(50, y, "Product")
+            c.drawString(250, y, "Qty")
+            c.drawString(320, y, "Price")
+            c.drawString(430, y, "Total")
+
+            y -= 15
+            c.line(50, y, 540, y)
+
+            y -= 20
+
+            c.setFont("Helvetica", 11)
+
+            for item in items_data:
+
+                c.drawString(50, y, item["name"])
+                c.drawString(260, y, str(item["quantity"]))
+                c.drawString(320, y, f"Rs {item['price']:.2f}")
+                c.drawString(430, y, f"Rs {item['total']:.2f}")
+
+                y -= 20
+
+
+                y -= 20
+
+        c.line(50, y, 540, y)
+
+        y -= 25
+
+        c.drawRightString(430, y, "Subtotal")
+        c.drawRightString(540, y, f"Rs {invoice_data['subtotal']:.2f}")
+
+        y -= 20
+
+        c.drawRightString(430, y, "GST")
+        c.drawRightString(540, y, f"Rs {invoice_data['total_tax']:.2f}")
+
+        y -= 20
+
+        c.drawRightString(430, y, "Discount")
+        c.drawRightString(540, y, f"Rs {invoice_data['discount']:.2f}")
+
+        y -= 20
+
+        c.setFont("Helvetica-Bold", 12)
+
+        c.drawRightString(430, y, "Grand Total")
+        c.drawRightString(540, y, f"Rs {invoice_data['total_amount']:.2f}")
+
+
+        y -= 30
+
+        c.setFont("Helvetica", 11)
+
+        c.drawString(50, y, f"Amount Paid : Rs {invoice_data['amount_paid']:.2f}")
+
+        y -= 20
+
+        due = invoice_data["total_amount"] - invoice_data["amount_paid"]
+
+        c.drawString(50, y, f"Due Amount : Rs {due:.2f}")
+
+        y -= 20
+
+        c.drawString(50, y, f"Status : {invoice_data['status']}")
             
         # Finalize the current page
         c.showPage()
