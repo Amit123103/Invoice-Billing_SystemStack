@@ -109,12 +109,22 @@ class ReportService:
         
         # Initialize a new PDF canvas on standard A4 size paper
         c = canvas.Canvas(filename, pagesize=A4)
+        amount_paid = float(invoice_data.get("amount_paid", 0))
+        total_amount = float(invoice_data.get("total_amount", 0))
+        due_amount = total_amount - amount_paid
+        status = invoice_data.get("status", "Pending")
         
         # Draw the main title text near the top of the page (Coordinates: X=100, Y=800)
-        c.drawString(100, 800, f"Invoice: {invoice_data['invoice_number']}")
-        
-        # Draw the total amount text slightly lower (Y=780)
-        c.drawString(100, 780, f"Total Amount: {invoice_data['total_amount']}")
+         # Draw the total amount text slightly lower (Y=780)
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(100, 800, "SMART ERP BILLING SYSTEM")
+
+        c.setFont("Helvetica", 12)
+        c.drawString(100, 770, f"Invoice No : {invoice_data['invoice_number']}")
+        c.drawString(100, 750, f"Total Amount : ₹{total_amount:.2f}")
+        c.drawString(100, 730, f"Amount Paid : ₹{amount_paid:.2f}")
+        c.drawString(100, 710, f"Due Amount : ₹{due_amount:.2f}")
+        c.drawString(100, 690, f"Payment Status : {status}")
         
         # Check if a QR code image was successfully created and exists on the hard drive
         if qr_path and os.path.exists(qr_path):

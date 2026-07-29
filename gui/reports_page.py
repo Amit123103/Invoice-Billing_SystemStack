@@ -3,7 +3,7 @@
 #
 # File    : reports_page.py
 #
-# Team Member :
+# Team Member :Bhipender Singh
 # Team Member 4
 #
 # Module :
@@ -44,6 +44,12 @@ from tkinter import ttk, filedialog, messagebox
 import os
 from database.queries import DatabaseQueries
 from services.report_service import ReportService
+
+# Invoice Status Constants
+STATUS_PAID = "Paid"
+STATUS_PENDING = "Pending"
+STATUS_PARTIAL = "Partial"
+STATUS_UNKNOWN = "Unknown"
 
 # ---------------------------------------------
 # Team Member 4
@@ -126,8 +132,8 @@ class ReportsPage(ctk.CTkFrame):
         action_frame = ctk.CTkFrame(table_card, fg_color="transparent")
         action_frame.pack(fill="x", padx=20, pady=(0, 20))
         
-        ctk.CTkButton(action_frame, text="Mark as Paid", command=lambda: self.update_status("Paid"), fg_color="#10b981", hover_color="#059669").pack(side="right", padx=10)
-        ctk.CTkButton(action_frame, text="Mark as Pending", command=lambda: self.update_status("Pending"), fg_color="#f59e0b", hover_color="#d97706").pack(side="right", padx=10)
+        ctk.CTkButton(action_frame, text="Mark as Paid", command=lambda: self.update_status(STATUS_PAID), fg_color="#10b981", hover_color="#059669").pack(side="right", padx=10)
+        ctk.CTkButton(action_frame, text="Mark as Pending", command=lambda: self.update_status(STATUS_PENDING), fg_color="#f59e0b", hover_color="#d97706").pack(side="right", padx=10)
         
         # Bind the frame to update whenever it's raised/shown
         self.bind("<Map>", lambda e: self.load_data())
@@ -156,54 +162,92 @@ class ReportsPage(ctk.CTkFrame):
         invoices = [dict(row) for row in self.db.get_all("invoices")]
         customers = [dict(row) for row in self.db.get_all("customers")]
         products = [dict(row) for row in self.db.get_all("products")]
+
+        customer_map = {c["id"]: c["name"] for c in customers}
+
+        self.update_summary_cards(invoices, customers, products)
+        self.populate_tree(invoices, customer_map)
+
+        # update the summary card
+
+
+    def update_summary_cards(self, invoices, customers, products):
+        total_revenue = sum(
+    inv.get("total_amount", 0)
+    for inv in invoices
+    if inv.get("status") in (
+        STATUS_PAID,
+        STATUS_PENDING,
+        STATUS_PARTIAL
+    )
+)
         
-        customer_map = {c['id']: c['name'] for c in customers}
-        
-        # Calculate metrics
-        total_revenue = sum(inv.get('total_amount', 0) for inv in invoices if inv.get('status') in ('Paid', 'Pending', 'Partial'))
+
         total_invoices = len(invoices)
         total_customers = len(customers)
         total_products = len(products)
-        
+
         self.sales_var.set(f"₹{total_revenue:,.2f}")
         self.invoices_var.set(str(total_invoices))
         self.customers_var.set(str(total_customers))
         self.products_var.set(str(total_products))
-        
+
         self.last_metrics = {
-            'revenue': f"₹{total_revenue:,.2f}",
-            'invoices': str(total_invoices),
-            'customers': str(total_customers),
-            'products': str(total_products)
+            "revenue": f"₹{total_revenue:,.2f}",
+            "invoices": str(total_invoices),
+            "customers": str(total_customers),
+            "products": str(total_products),
         }
+
+    #fill the table and prepare the pdf data
+
+
+
+    def populate_tree(self, invoices, customer_map):
         self.last_invoices_data = []
-        
-        # Clear treeview
+
+        # Clear Treeview
         for row in self.tree.get_children():
             self.tree.delete(row)
-            
-        # Sort invoices by date descending
-        sorted_invoices = sorted(invoices, key=lambda x: x.get('id', 0), reverse=True)
-        
+
+        sorted_invoices = sorted(
+            invoices,
+            key=lambda x: x.get("id", 0),
+            reverse=True
+        )
+
         for inv in sorted_invoices:
-            cust_name = customer_map.get(inv.get('customer_id'), "Unknown")
-            created_at = inv.get('created_at', 'N/A')
+
+            cust_name = customer_map.get(
+                inv.get("customer_id"),
+                STATUS_UNKNOWN
+            )
+
+            created_at = inv.get("created_at", "N/A")
             date_str = str(created_at).split(" ")[0] if created_at else "N/A"
-            amt_str = f"₹{inv.get('total_amount', 0):,.2f}"
-            self.tree.insert("", "end", values=(
-                date_str, 
-                inv.get('invoice_number', 'N/A'), 
-                cust_name, 
-                amt_str, 
-                inv.get('status', 'N/A')
-            ))
+
+            amount = f"₹{inv.get('total_amount', 0):,.2f}"
+
+            self.tree.insert(
+                "",
+                "end",
+                values=(
+                    date_str,
+                    inv.get("invoice_number", "N/A"),
+                    cust_name,
+                    amount,
+                    inv.get("status", "N/A")
+                )
+            )
+
             self.last_invoices_data.append({
-                'date': date_str,
-                'number': inv.get('invoice_number', 'N/A'),
-                'customer': cust_name,
-                'amount': amt_str,
-                'status': inv.get('status', 'N/A')
+                "date": date_str,
+                "number": inv.get("invoice_number", "N/A"),
+                "customer": cust_name,
+                "amount": amount,
+                "status": inv.get("status", "N/A")
             })
+
 
     # ---------------------------------------------
     # Team Member 4
