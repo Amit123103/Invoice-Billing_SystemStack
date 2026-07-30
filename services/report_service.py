@@ -128,9 +128,12 @@ class ReportService:
         
         # Check if a QR code image was successfully created and exists on the hard drive
         if qr_path and os.path.exists(qr_path):
-            # Embed the QR image into the PDF on the right side (X=400)
             c.drawImage(qr_path, 400, 700, width=100, height=100)
+            # Embed the QR image into the PDF on the right side (X=400)
 
+           
+
+             
             # ---------- Product Table ----------
 
             y = 620
@@ -151,13 +154,29 @@ class ReportService:
 
             for item in items_data:
 
+    # Check if page is full
+                if y < 80:
+                    c.showPage()
+
+                    y = 780
+
+                    # Draw table header again
+                    c.setFont("Helvetica-Bold", 12)
+                    c.drawString(50, y, "Product")
+                    c.drawString(250, y, "Qty")
+                    c.drawString(320, y, "Price")
+                    c.drawString(430, y, "Total")
+
+                    y -= 15
+                    c.line(50, y, 540, y)
+                    y -= 20
+
+                    c.setFont("Helvetica", 11)
+
                 c.drawString(50, y, item["name"])
                 c.drawString(260, y, str(item["quantity"]))
                 c.drawString(320, y, f"Rs {item['price']:.2f}")
                 c.drawString(430, y, f"Rs {item['total']:.2f}")
-
-                y -= 20
-
 
                 y -= 20
 
