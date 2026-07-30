@@ -3,7 +3,7 @@
 #
 # File    : invoice_page.py
 #
-# Team Member :
+# Team Member :Bhipender
 # Team Member 4
 #
 # Module :
@@ -48,6 +48,8 @@ Dependencies:
 ###########################################################
 import customtkinter as ctk
 from tkinter import ttk, messagebox, filedialog
+
+from matplotlib import style
 from database.queries import DatabaseQueries
 from services.billing_service import BillingService
 from services.qr_service import QRService
@@ -78,6 +80,11 @@ class InvoicePage(ctk.CTkFrame):
     # ---------------------------------------------
     def __init__(self, parent, controller):
         super().__init__(parent, fg_color="transparent")
+        self.scroll_frame = ctk.CTkScrollableFrame(
+            self,
+            fg_color="transparent"
+        )
+        self.scroll_frame.pack(fill="both", expand=True)
         self.controller = controller
         
         # Instantiate necessary backend services
@@ -100,97 +107,295 @@ class InvoicePage(ctk.CTkFrame):
         # ---------------------------------------------------------
         # Header Area
         # ---------------------------------------------------------
-        header = ctk.CTkFrame(self, fg_color="transparent")
+        header = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
         header.pack(fill="x", padx=30, pady=(20, 10))
         ctk.CTkLabel(header, text="Create Invoice", font=ctk.CTkFont(size=24, weight="bold"), text_color="#111827").pack(side="left")
         
         # ---------------------------------------------------------
         # Settings Card (Customer & Payment Selection)
         # ---------------------------------------------------------
-        settings_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        settings_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         settings_card.pack(fill="x", padx=30, pady=5)
         
         row1 = ctk.CTkFrame(settings_card, fg_color="transparent")
         row1.pack(fill="x", padx=20, pady=20)
         
         # Dropdown to select the customer being billed
+        customer_frame = ctk.CTkFrame(row1, fg_color="transparent")
+        customer_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+            customer_frame,
+    text="Customer",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
+        self.customer_search_var = ctk.StringVar()
+
         self.customer_var = ctk.StringVar()
-        self.customer_dropdown = ctk.CTkOptionMenu(row1, variable=self.customer_var, values=[], width=300, fg_color="#f9fafb", text_color="#111827")
-        self.customer_dropdown.pack(side="left", padx=10)
+
+        customer_search = ctk.CTkEntry(
+            customer_frame,
+            textvariable=self.customer_search_var,
+            placeholder_text="🔍 Search Customer...",
+            width=250
+        )
+        customer_search.pack(pady=(0, 5))
+        # Filter customers while typing
+        self.customer_search_var.trace_add(
+            "write",
+            self.filter_customers
+        )
+
+        self.customer_dropdown = ctk.CTkOptionMenu(
+    customer_frame,
+    variable=self.customer_var,
+    values=[],
+    width=250,
+    fg_color="#f9fafb",
+    text_color="#111827"
+)
+        self.customer_dropdown.pack()
         
         # Dropdown to select how the customer is paying
+        payment_frame = ctk.CTkFrame(row1, fg_color="transparent")
+        payment_frame.pack(side="left", padx=30)
+
+        ctk.CTkLabel(
+    payment_frame,
+    text="Payment Method",
+    font=ctk.CTkFont(size=13, weight="bold")
+    ).pack(anchor="w")
+
         self.payment_var = ctk.StringVar(value="Cash")
-        ctk.CTkOptionMenu(row1, variable=self.payment_var, values=["Cash", "Card", "UPI", "Bank Transfer"], width=200, fg_color="#f9fafb", text_color="#111827").pack(side="left", padx=10)
+
+        self.payment_dropdown = ctk.CTkOptionMenu(
+    payment_frame,
+    variable=self.payment_var,
+    values=["Cash", "Card", "UPI", "Bank Transfer"],
+    width=200,
+    fg_color="#f9fafb",
+    text_color="#111827"
+)
+        self.payment_dropdown.pack()
         
         # ---------------------------------------------------------
         # Product Selection Card (Adding to Cart)
         # ---------------------------------------------------------
-        prod_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        prod_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         prod_card.pack(fill="x", padx=30, pady=10)
         
         row2 = ctk.CTkFrame(prod_card, fg_color="transparent")
         row2.pack(fill="x", padx=20, pady=20)
         
         # Dropdown to select which product to add to the cart
+        product_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        product_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+            product_frame,
+            text="Product",
+            font=ctk.CTkFont(size=13, weight="bold")
+        ).pack(anchor="w")
+
+        # Search Box
+        self.search_var = ctk.StringVar()
+
+        search_entry = ctk.CTkEntry(
+            product_frame,
+            textvariable=self.search_var,
+            placeholder_text="🔍 Search Product...",
+            width=250
+        )
+        search_entry.pack(pady=(0,5))
+
+        # Update dropdown while typing
+        self.search_var.trace_add("write", self.filter_products)
+
+        # Product Dropdown
         self.product_var = ctk.StringVar()
-        self.product_dropdown = ctk.CTkOptionMenu(row2, variable=self.product_var, values=[], width=300, fg_color="#f9fafb", text_color="#111827")
-        self.product_dropdown.pack(side="left", padx=10)
+
+        self.product_dropdown = ctk.CTkOptionMenu(
+            product_frame,
+            variable=self.product_var,
+            values=[],
+            width=250,
+            fg_color="#f9fafb",
+            text_color="#111827"
+        )
+        self.product_dropdown.pack()
         
         # Quantity input field
+        qty_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        qty_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+    qty_frame,
+    text="Quantity",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
         self.qty_var = ctk.StringVar(value="1")
-        ctk.CTkEntry(row2, textvariable=self.qty_var, placeholder_text="Qty", width=80).pack(side="left", padx=10)
+
+        ctk.CTkEntry(
+    qty_frame,
+    textvariable=self.qty_var,
+    width=80
+).pack()
         
         # Discount percentage input field (applied per item)
+        discount_frame = ctk.CTkFrame(row2, fg_color="transparent")
+        discount_frame.pack(side="left", padx=10)
+
+        ctk.CTkLabel(
+    discount_frame,
+    text="Discount %",
+    font=ctk.CTkFont(size=13, weight="bold")
+).pack(anchor="w")
+
         self.discount_var = ctk.StringVar(value="0")
-        ctk.CTkEntry(row2, textvariable=self.discount_var, placeholder_text="Discount %", width=100).pack(side="left", padx=10)
+
+        ctk.CTkEntry(
+    discount_frame,
+    textvariable=self.discount_var,
+    width=100
+).pack()
+
         
         # Button to process the selection and push it into the cart
-        ctk.CTkButton(row2, text="Add to Cart", command=self.add_to_cart, fg_color="#2563eb").pack(side="left", padx=20)
+        ctk.CTkButton(
+    row2,
+    text="Add to Cart",
+    command=self.add_to_cart,
+    width=130,
+    height=40,
+    fg_color="#2563eb"
+).pack(side="left", padx=8, pady=(20, 0))
+
+
+
+        # Button to remove the currently selected item from the cart
+        ctk.CTkButton(
+    row2,
+    text="Remove Selected item",
+    command=self.remove_selected_item,
+    width=130,
+    height=40,
+    fg_color="#dc2626",
+    hover_color="#b91c1c"
+).pack(side="left", padx=8, pady=(20, 0))
         
         # ---------------------------------------------------------
         # Shopping Cart Data Grid (Treeview)
         # ---------------------------------------------------------
-        table_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        table_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         table_card.pack(fill="both", expand=True, padx=30, pady=5)
         
-        cols = ("ID", "Name", "Qty", "Price", "Discount", "GST %", "Total")
+        cols = ("S.no", "Name", "Qty", "Price", "Discount", "GST %", "Total")
         style = ttk.Style()
-        style.configure("Treeview", background="#FFFFFF", foreground="#111827", rowheight=40, borderwidth=0)
-        
-        self.cart_tree = ttk.Treeview(table_card, columns=cols, show="headings", style="Treeview", height=6)
-        for c in cols:
-            self.cart_tree.heading(c, text=c)
-            self.cart_tree.column(c, width=100)
-            
-        self.cart_tree.pack(fill="both", expand=True, padx=20, pady=20)
+
+        style.theme_use("default")   # Important
+
+        style.configure(
+    "Treeview",
+    background="white",
+    foreground="black",
+    fieldbackground="white",
+    rowheight=35
+)
+
+        style.configure(
+    "Treeview.Heading",
+    font=("Arial", 11, "bold")
+)
+
+        style.map(
+    "Treeview",
+    background=[("selected", "#BBDEFF")],
+    foreground=[("selected", "black")]
+)
+
+        # Create a frame inside the table card
+        tree_frame = ctk.CTkFrame(table_card, fg_color="transparent")
+        tree_frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+        # Vertical Scrollbar
+        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical")
+
+        # Treeview
+        self.cart_tree = ttk.Treeview(
+            tree_frame,
+            columns=cols,
+            show="headings",
+            selectmode="browse",
+            yscrollcommand=scrollbar.set
+        )
+        # Configure column headings
+        for col in cols:
+            self.cart_tree.heading(col, text=col)
+        self.cart_tree.column("S.no", width=70, anchor="center")
+        self.cart_tree.column("Name", width=250, anchor="w")
+        self.cart_tree.column("Qty", width=70, anchor="center")
+        self.cart_tree.column("Price", width=100, anchor="center")
+        self.cart_tree.column("Discount", width=100, anchor="center")
+        self.cart_tree.column("GST %", width=80, anchor="center")
+        self.cart_tree.column("Total", width=100, anchor="center")
+
+        scrollbar.config(command=self.cart_tree.yview)
+
+        self.cart_tree.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        self.cart_tree.bind("<<TreeviewSelect>>", self.on_cart_select)
         
         # ---------------------------------------------------------
         # Footer / Totals Card
         # ---------------------------------------------------------
-        totals_card = ctk.CTkFrame(self, fg_color="#FFFFFF", corner_radius=12)
+        totals_card = ctk.CTkFrame(self.scroll_frame, fg_color="#FFFFFF", corner_radius=12)
         totals_card.pack(fill="x", padx=30, pady=10)
         
         row3 = ctk.CTkFrame(totals_card, fg_color="transparent")
         row3.pack(fill="x", padx=20, pady=20)
         
         # Subtotal display (Price before tax)
-        self.lbl_subtotal = ctk.CTkLabel(row3, text="Subtotal: ₹0.00", font=ctk.CTkFont(size=14), text_color="#6b7280")
+        self.lbl_subtotal = ctk.CTkLabel(row3, text="Subtotal: ₹0.00", font=ctk.CTkFont(size=12), text_color="#6b7280")
         self.lbl_subtotal.pack(side="left", padx=20)
         
         # Total Tax display
-        self.lbl_tax = ctk.CTkLabel(row3, text="Total Tax: ₹0.00", font=ctk.CTkFont(size=14), text_color="#6b7280")
+        self.lbl_tax = ctk.CTkLabel(row3, text="Total Tax: ₹0.00", font=ctk.CTkFont(size=12), text_color="#6b7280")
         self.lbl_tax.pack(side="left", padx=20)
         
         # Final Grand Total display
-        self.lbl_total = ctk.CTkLabel(row3, text="Final Amount: ₹0.00", font=ctk.CTkFont(size=20, weight="bold"), text_color="#10b981")
+        self.lbl_total = ctk.CTkLabel(row3, text="Final Amount: ₹0.00", font=ctk.CTkFont(size=18, weight="bold"), text_color="#10b981")
         self.lbl_total.pack(side="left", padx=20)
         
         # Amount Paid Input
         paid_frame = ctk.CTkFrame(row3, fg_color="transparent")
         paid_frame.pack(side="left", padx=20)
-        ctk.CTkLabel(paid_frame, text="Amount Paid: ₹", font=ctk.CTkFont(size=14), text_color="#6b7280").pack(side="left")
+        ctk.CTkLabel(paid_frame, text="Amount Paid: ₹", font=ctk.CTkFont(size=12), text_color="#6b7280").pack(side="left")
         self.amount_paid_var = ctk.StringVar(value="0")
+        # Update paid and due amounts whenever the value changes
+        self.amount_paid_var.trace_add(
+            "write",
+            self.update_payment_status
+        )
         ctk.CTkEntry(paid_frame, textvariable=self.amount_paid_var, width=80).pack(side="left", padx=5)
+        # Paid Amount Display
+        self.lbl_paid = ctk.CTkLabel(
+            row3,
+            text="Paid: ₹0.00",
+            font=ctk.CTkFont(size=12),
+            text_color="#16a34a"
+        )
+        self.lbl_paid.pack(side="left", padx=20)
+
+        # Due Amount Display
+        self.lbl_due = ctk.CTkLabel(
+            row3,
+            text="Due: ₹0.00",
+            font=ctk.CTkFont(size=12, weight="bold"),
+            text_color="#dc2626"
+        )
+        self.lbl_due.pack(side="left", padx=20)
         
         # Button to finalize the transaction
         ctk.CTkButton(row3, text="Generate Invoice", command=self.generate_invoice, fg_color="#10b981", hover_color="#059669", font=ctk.CTkFont(weight="bold")).pack(side="right", padx=10)
@@ -216,6 +421,9 @@ class InvoicePage(ctk.CTkFrame):
             # Query all customers and products
             customers = self.db.get_all("customers")
             products = self.db.get_all("products")
+            # Store complete customer and product lists for searching
+            self.all_customers = customers
+            self.all_products = products
             
             # Format the data into lists of strings like "1 - John Doe" so the user can see both ID and Name
             c_vals = [f"{c['id']} - {c['name']}" for c in customers]
@@ -231,6 +439,92 @@ class InvoicePage(ctk.CTkFrame):
         except Exception:
             # If the database is missing or empty, ignore it gracefully
             pass
+
+# ---------------------------------------------
+# Team Member 4
+# Function: filter_products
+# Purpose:
+# Dynamically filters the product dropdown based on
+# the text entered in the search box.
+# ---------------------------------------------
+
+    def filter_products(self, *args):
+        """Filters products as the user types."""
+
+        search = self.search_var.get().lower().strip()
+
+        filtered = []
+
+        for product in self.all_products:
+
+            product_text = f"{product['id']} - {product['name']}"
+
+            if (
+                search in product['name'].lower()
+                or search in str(product['id'])
+            ):
+                filtered.append(product_text)
+
+        if filtered:
+            self.product_dropdown.configure(values=filtered)
+
+            current = self.product_var.get()
+
+            if current not in filtered:
+                self.product_var.set(filtered[0])
+
+        else:
+            self.product_dropdown.configure(values=["No Product Found"])
+            self.product_var.set("No Product Found")
+
+
+# ---------------------------------------------
+# Team Member 4
+# Function: filter_customers
+# Purpose:
+# Dynamically filters the customer dropdown
+# based on the text entered in the search box.
+# ---------------------------------------------
+    def filter_customers(self, *args):
+        """
+        Dynamically filters the customer dropdown
+        according to the user's search input.
+        """
+
+        # Get the search text entered by the user
+        search = self.customer_search_var.get().lower().strip()
+
+        # Store matching customers
+        filtered = []
+
+        # Loop through all customers
+        for customer in self.all_customers:
+
+            customer_text = f"{customer['id']} - {customer['name']}"
+
+            # Search by Customer ID or Customer Name
+            if (
+                search in customer["name"].lower()
+                or search in str(customer["id"])
+            ):
+                filtered.append(customer_text)
+
+        # Update the dropdown
+        if filtered:
+
+            self.customer_dropdown.configure(values=filtered)
+
+            current = self.customer_var.get()
+
+            if current not in filtered:
+                self.customer_var.set(filtered[0])
+
+        else:
+
+            self.customer_dropdown.configure(values=["No Customer Found"])
+            self.customer_var.set("No Customer Found")
+
+
 
     # Purpose:
     # Reads the currently selected product, applies quantity and discount, 
@@ -298,10 +592,16 @@ class InvoicePage(ctk.CTkFrame):
             self.cart_items.append(item_data)
             
             # Visually append a new row to the Treeview so the cashier sees it
+            serial_no = len(self.cart_tree.get_children()) + 1
+
             self.cart_tree.insert("", "end", values=(
-                item_data['product_id'], item_data['name'], item_data['quantity'], 
-                f"₹{item_data['price']:.2f}", f"₹{item_data['discount']:.2f}", 
-                f"{item_data['gst_percentage']}%", f"₹{item_data['total']:.2f}"
+                serial_no,
+                item_data['name'],
+                item_data['quantity'],
+                f"₹{item_data['price']:.2f}",
+                f"₹{item_data['discount']:.2f}",
+                f"{item_data['gst_percentage']}%",
+                f"₹{item_data['total']:.2f}"
             ))
             
             # Recalculate the master totals at the bottom of the screen
@@ -332,6 +632,44 @@ class InvoicePage(ctk.CTkFrame):
         self.lbl_tax.configure(text=f"Total Tax: ₹{self.total_tax:.2f}")
         self.lbl_total.configure(text=f"Final Amount: ₹{self.final_amount:.2f}")
         self.amount_paid_var.set(f"{self.final_amount:.2f}")
+        self.update_payment_status()
+
+
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: update_payment_status
+    # Purpose:
+    # Calculates the paid amount, due amount,
+    # or change amount whenever the user enters
+    # a payment value.
+    # ---------------------------------------------
+    def update_payment_status(self, *args):
+        """
+        Updates the Paid and Due labels dynamically.
+        """
+
+        try:
+            amount_paid = float(self.amount_paid_var.get())
+        except ValueError:
+            amount_paid = 0.0
+
+        # Update Paid label
+        self.lbl_paid.configure(text=f"Paid: ₹{amount_paid:.2f}")
+
+        difference = amount_paid - self.final_amount
+
+        if difference >= 0:
+            # Customer has paid enough
+            self.lbl_due.configure(
+                text=f"Change: ₹{difference:.2f}",
+                text_color="#16a34a"
+            )
+        else:
+            # Customer still owes money
+            self.lbl_due.configure(
+                text=f"Due: ₹{-difference:.2f}",
+                text_color="#dc2626"
+            )
 
     # Purpose:
     # Empties the shopping basket and resets all totals to zero.
@@ -347,6 +685,7 @@ class InvoicePage(ctk.CTkFrame):
         """
         # Empty internal memory array
         self.cart_items = []
+        self.selected_cart_index = None
         
         # Empty visual rows
         for row in self.cart_tree.get_children():
@@ -354,6 +693,93 @@ class InvoicePage(ctk.CTkFrame):
             
         # Re-trigger total math (which will now sum up to zero)
         self.update_totals()
+
+
+    #Purpose:
+    # Removes the currently selected item from the cart and updates totals.
+    # ---------------------------------------------
+    # Team Member 4
+    # Function: remove_selected_item
+    # Purpose:
+    # Removes the selected product from the cart and updates the UI and totals.
+    # ---------------------------------------------
+
+    def remove_selected_item(self):
+        """Removes the selected row from the shopping cart."""
+
+    # Get selected row
+        selected_item = self.cart_tree.selection()
+
+        if not selected_item:
+         messagebox.showwarning(
+            "No Selection",
+            "Please select a product to remove."
+        )
+         return
+
+    # Get Treeview item ID
+        item = selected_item[0]
+
+    # Get index of selected row
+        row_index = self.cart_tree.index(item)
+
+    # Remove from cart_items list
+        if 0 <= row_index < len(self.cart_items):
+            self.cart_items.pop(row_index)
+
+    # Remove from Treeview
+        self.cart_tree.delete(item)
+
+    # Update totals
+        self.update_totals()
+        # Purpose:
+# Detects when the user selects a product from the shopping cart.
+# It loads the selected item's details into the Product, Quantity,
+# and Discount fields so the item can be edited.
+# ---------------------------------------------
+# Team Member 4
+# Function: on_cart_select
+# Purpose:
+# Handles Treeview row selection and populates the input fields
+# with the selected cart item's information for updating.
+# ---------------------------------------------
+
+    def on_cart_select(self, event):
+
+        selected = self.cart_tree.selection()
+
+        if not selected:
+            return
+
+        item = selected[0]
+
+        self.selected_cart_index = self.cart_tree.index(item)
+
+        values = self.cart_tree.item(item)["values"]
+
+        product_id = values[0]
+        quantity = values[2]
+
+        # Set quantity
+        self.qty_var.set(str(quantity))
+
+    # Set discount
+        discount = self.cart_items[self.selected_cart_index]["discount"]
+        price = self.cart_items[self.selected_cart_index]["price"]
+
+        if price > 0:
+            discount_percent = (discount / (price * quantity)) * 100
+        else:
+                discount_percent = 0
+
+        self.discount_var.set(f"{discount_percent:.0f}")
+
+    # Select product in dropdown
+        for value in self.product_dropdown.cget("values"):
+         if value.startswith(f"{product_id} -"):
+            self.product_var.set(value)
+            break
+    
 
     # Purpose:
     # Finalizes the checkout. It generates a QR code, saves data to SQLite, prints the PDF, and clears the cart.
@@ -445,8 +871,3 @@ class InvoicePage(ctk.CTkFrame):
         except Exception as e:
             # If the database fails (e.g. locked file), show the error so the app doesn't crash silently
             messagebox.showerror("Error", str(e))
-
-
-
-
-

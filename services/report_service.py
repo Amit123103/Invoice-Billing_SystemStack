@@ -3,7 +3,7 @@
 #
 # File    : report_service.py
 #
-# Team Member :
+# Team Member :Bhipender Singh
 # Team Member 4
 #
 # Module :
@@ -109,17 +109,117 @@ class ReportService:
         
         # Initialize a new PDF canvas on standard A4 size paper
         c = canvas.Canvas(filename, pagesize=A4)
+        amount_paid = float(invoice_data.get("amount_paid", 0))
+        total_amount = float(invoice_data.get("total_amount", 0))
+        due_amount = total_amount - amount_paid
+        status = invoice_data.get("status", "Pending")
         
         # Draw the main title text near the top of the page (Coordinates: X=100, Y=800)
-        c.drawString(100, 800, f"Invoice: {invoice_data['invoice_number']}")
-        
-        # Draw the total amount text slightly lower (Y=780)
-        c.drawString(100, 780, f"Total Amount: {invoice_data['total_amount']}")
+         # Draw the total amount text slightly lower (Y=780)
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(100, 800, "SMART ERP BILLING SYSTEM")
+
+        c.setFont("Helvetica", 12)
+        c.drawString(100, 770, f"Invoice No : {invoice_data['invoice_number']}")
+        c.drawString(100, 750, f"Total Amount : Rs {total_amount:.2f}")
+        c.drawString(100, 730, f"Amount Paid : Rs {amount_paid:.2f}")
+        c.drawString(100, 710, f"Due Amount : Rs {due_amount:.2f}")
+        c.drawString(100, 690, f"Payment Status : {status}")
         
         # Check if a QR code image was successfully created and exists on the hard drive
         if qr_path and os.path.exists(qr_path):
-            # Embed the QR image into the PDF on the right side (X=400)
             c.drawImage(qr_path, 400, 700, width=100, height=100)
+            # Embed the QR image into the PDF on the right side (X=400)
+
+           
+
+             
+            # ---------- Product Table ----------
+
+            y = 620
+
+            c.setFont("Helvetica-Bold", 12)
+
+            c.drawString(50, y, "Product")
+            c.drawString(250, y, "Qty")
+            c.drawString(320, y, "Price")
+            c.drawString(430, y, "Total")
+
+            y -= 15
+            c.line(50, y, 540, y)
+
+            y -= 20
+
+            c.setFont("Helvetica", 11)
+
+            for item in items_data:
+
+    # Check if page is full
+                if y < 80:
+                    c.showPage()
+
+                    y = 780
+
+                    # Draw table header again
+                    c.setFont("Helvetica-Bold", 12)
+                    c.drawString(50, y, "Product")
+                    c.drawString(250, y, "Qty")
+                    c.drawString(320, y, "Price")
+                    c.drawString(430, y, "Total")
+
+                    y -= 15
+                    c.line(50, y, 540, y)
+                    y -= 20
+
+                    c.setFont("Helvetica", 11)
+
+                c.drawString(50, y, item["name"])
+                c.drawString(260, y, str(item["quantity"]))
+                c.drawString(320, y, f"Rs {item['price']:.2f}")
+                c.drawString(430, y, f"Rs {item['total']:.2f}")
+
+                y -= 20
+
+        c.line(50, y, 540, y)
+
+        y -= 25
+
+        c.drawRightString(430, y, "Subtotal")
+        c.drawRightString(540, y, f"Rs {invoice_data['subtotal']:.2f}")
+
+        y -= 20
+
+        c.drawRightString(430, y, "GST")
+        c.drawRightString(540, y, f"Rs {invoice_data['total_tax']:.2f}")
+
+        y -= 20
+
+        c.drawRightString(430, y, "Discount")
+        c.drawRightString(540, y, f"Rs {invoice_data['discount']:.2f}")
+
+        y -= 20
+
+        c.setFont("Helvetica-Bold", 12)
+
+        c.drawRightString(430, y, "Grand Total")
+        c.drawRightString(540, y, f"Rs {invoice_data['total_amount']:.2f}")
+
+
+        y -= 30
+
+        c.setFont("Helvetica", 11)
+
+        c.drawString(50, y, f"Amount Paid : Rs {invoice_data['amount_paid']:.2f}")
+
+        y -= 20
+
+        due = invoice_data["total_amount"] - invoice_data["amount_paid"]
+
+        c.drawString(50, y, f"Due Amount : Rs {due:.2f}")
+
+        y -= 20
+
+        c.drawString(50, y, f"Status : {invoice_data['status']}")
             
         # Finalize the current page
         c.showPage()
