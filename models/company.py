@@ -3,7 +3,7 @@
 #
 # File    : company.py
 #
-# Team Member :
+# Team Member :Bhipender Singh
 # Team Member 4
 #
 # Module :
@@ -74,6 +74,10 @@ class Company:
     
     # Primary contact email address
     email: str
+
+
+    # URL of the company's official website
+    website: str
     
     # File system path pointing to the company's logo image used in PDF generation
     logo_path: str
