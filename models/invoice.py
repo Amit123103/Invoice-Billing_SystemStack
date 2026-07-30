@@ -94,6 +94,9 @@ class Invoice:
     
     # Human-readable, sequentially generated string (e.g., INV-20231024001)
     invoice_number: str
+
+    #human-readable date string in YYYY-MM-DD format (e.g., 2023-10-24)
+    invoice_date: str
     
     # Database ID of the customer who was billed
     customer_id: int
