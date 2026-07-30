@@ -240,9 +240,9 @@ Backend
 
 8 Files
 
-###                                    TEAM Member 3    
+###                                    TEAM Member-3 (Y.B.Ashok)
 
-## Team Member 3 – Customer & Billing Developer
+## Team Member-3 (Y.B.Ashok) – Customer & Billing Developer
 ## Role
 
 # Customer Management + Billing
@@ -375,10 +375,10 @@ Backend
 
 9 Files
 
-###                             TEAM Member 5
+###                             TEAM Member-5 (Rahul Kumar)
 
 
-### Team Member 5 – Database, Integration, Testing & Deployment
+### Team Member-5 (Rahul Kumar)– Database, Integration, Testing & Deployment
 ## Role
 
 ## Backend + Database + Final Integration
