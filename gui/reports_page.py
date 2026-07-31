@@ -539,12 +539,25 @@ class ReportsPage(ctk.CTkFrame):
 
         ax = fig.add_subplot(111)
 
-        ax.pie(
-            [paid, pending, partial],
-            labels=["Paid", "Pending", "Partial"],
-            autopct="%1.1f%%",
-            startangle=90
-        )
+        values = [paid, pending, partial]
+
+        if sum(values) == 0:
+            ax.text(
+                0.5,
+                0.5,
+                "No Invoice Data",
+                ha="center",
+                va="center",
+                fontsize=14
+            )
+            ax.set_axis_off()
+        else:
+            ax.pie(
+                values,
+                labels=["Paid", "Pending", "Partial"],
+                autopct="%1.1f%%",
+                startangle=90
+            )
 
         ax.set_title("Invoice Status")
 
